@@ -131,39 +131,50 @@
       filter: drop-shadow(0 0 24px rgba(255, 214, 127, 0.4));
     }
 
-    /* Code Inputs */
+    /* Code Inputs — Liquid Glass */
     .code-container { display: flex; gap: 14px; justify-content: center; margin: 0 0 40px; }
     .code-input {
       width: 60px; height: 75px;
       font-size: 34px; text-align: center;
       font-family: 'Neulis Cursive', cursive;
       font-weight: bold;
-      background: var(--input-bg);
-      border: 1px solid var(--input-border);
-      border-bottom: 3px solid var(--input-border-bottom);
-      border-top-color: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
+      border-bottom: 2px solid rgba(255, 214, 127, 0.32);
       color: var(--accent-gold);
-      border-radius: 16px;
+      border-radius: 18px;
       outline: none;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: inset 0 4px 15px rgba(0,0,0,0.5), 0 4px 10px rgba(0,0,0,0.25);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        0 4px 18px rgba(0,0,0,0.18);
       text-transform: uppercase;
       caret-color: var(--accent-gold);
       -webkit-appearance: none;
       appearance: none;
     }
     .code-input:focus {
-      border-color: var(--accent-gold);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255,214,127,0.40);
+      border-top-color: rgba(255,255,255,0.30);
       border-bottom-color: var(--accent-amber);
-      background: var(--input-focus-bg);
-      transform: translateY(-6px) scale(1.05);
+      transform: translateY(-7px) scale(1.06);
       color: #FFF;
-      text-shadow: 0 0 18px rgba(255, 214, 127, 0.5);
-      box-shadow: 0 12px 32px rgba(255, 214, 127, 0.18), inset 0 2px 5px rgba(0,0,0,0.4);
+      text-shadow: 0 0 18px rgba(255,214,127,0.55);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        0 14px 32px rgba(255,214,127,0.18),
+        0 4px 12px rgba(0,0,0,0.15);
     }
     .code-input:not(:placeholder-shown) {
-      border-color: rgba(255, 214, 127, 0.5);
-      box-shadow: 0 0 18px rgba(255, 214, 127, 0.10), inset 0 2px 5px rgba(0,0,0,0.4);
+      border-color: rgba(255,214,127,0.35);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.20),
+        0 0 16px rgba(255,214,127,0.10),
+        0 4px 12px rgba(0,0,0,0.12);
     }
 
     /* Buttons */
@@ -225,34 +236,42 @@
 
     .delegationNames { display: flex; flex-direction: column; gap: 16px; }
 
-    /* Alle Text-Inputs global schön stylen (überschreibt Tailwind forms) */
+    /* Text-Inputs — Liquid Glass (überschreibt Tailwind forms) */
     input[type="text"], .delegationNameInput {
-      background: var(--input-bg) !important;
-      border: 1px solid var(--input-border) !important;
-      border-bottom: 2px solid var(--input-border-bottom) !important;
-      border-top-color: rgba(255, 255, 255, 0.07) !important;
+      background: rgba(255, 255, 255, 0.07) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.13) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.20) !important;
+      border-bottom: 1.5px solid rgba(255, 214, 127, 0.28) !important;
       color: var(--text-main) !important;
       padding: 18px 20px;
       border-radius: 16px;
       outline: none;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 400;
       font-family: 'Inter', system-ui, sans-serif;
       width: 100%;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: inset 0 3px 10px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.2) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        0 4px 16px rgba(0,0,0,0.14) !important;
       caret-color: var(--accent-gold);
       -webkit-appearance: none;
       appearance: none;
     }
     input[type="text"]::placeholder, .delegationNameInput::placeholder {
-      color: rgba(255, 255, 255, 0.25) !important;
+      color: rgba(255, 255, 255, 0.28) !important;
     }
     input[type="text"]:focus, .delegationNameInput:focus {
-      border-color: var(--accent-gold) !important;
-      border-bottom-color: var(--accent-amber) !important;
-      background: var(--input-focus-bg) !important;
-      box-shadow: 0 6px 22px rgba(255, 214, 127, 0.14), inset 0 2px 6px rgba(0,0,0,0.35) !important;
+      background: rgba(255, 255, 255, 0.11) !important;
+      border-color: rgba(255, 214, 127, 0.30) !important;
+      border-top-color: rgba(255, 255, 255, 0.28) !important;
+      border-bottom-color: rgba(255, 214, 127, 0.52) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.22),
+        0 0 22px rgba(255,214,127,0.12),
+        0 8px 24px rgba(0,0,0,0.12) !important;
       transform: translateY(-2px);
     }
 
@@ -269,7 +288,7 @@
     .anim-title { font-size: 52px; color: var(--accent-gold); line-height: 1.1; margin-bottom: 8px; text-shadow: 0 0 40px rgba(255, 214, 127, 0.40), 0 4px 12px rgba(0,0,0,0.8); }
     .anim-sub { font-size: 15px; font-weight: 600; letter-spacing: 5px; color: var(--text-muted); text-transform: uppercase; }
 
-    /* ─── Seiten-Emblem (Ring + Herz) ─── */
+    /* ─── Seiten-Emblem ─── */
     .page-outer {
       width: 100%; max-width: 520px; margin: 0 auto;
       min-height: 100vh;
@@ -281,47 +300,81 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       opacity: 0;
-      transform: translateY(-12px) scale(0.90);
-      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(-16px) scale(0.88);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .page-emblem.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+    .page-emblem.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    /* Glow-Orb hinter dem Herz */
+    .emblem-glow-orb {
+      position: absolute;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,179,71,0.20) 0%, rgba(255,214,127,0.08) 45%, transparent 70%);
+      animation: emblemPulse 4.2s ease-in-out infinite alternate;
+      pointer-events: none;
     }
 
-    .emblem-ring-wrap {
+    /* Herz mit Floating-Animation */
+    .emblem-heart-wrap {
       position: relative;
       display: flex; align-items: center; justify-content: center;
+      width: 130px; height: 130px;
     }
-
-    /* Herz-Zentrum */
     .emblem-heart-center {
+      width: 130px; height: 130px;
       position: relative; z-index: 2;
-      width: 110px; height: 110px;
+      animation: heartFloat 5.5s ease-in-out infinite;
+      filter:
+        drop-shadow(0 10px 24px rgba(255,179,71,0.30))
+        drop-shadow(0 0  36px rgba(77,168,255,0.18))
+        drop-shadow(0 2px  8px rgba(0,0,0,0.50));
     }
     .emblem-heart-center svg { width: 100%; height: 100%; }
 
-    .emblem-label {
-      margin-top: 16px;
-      text-align: center;
-      line-height: 1.35;
+    /* Dekorativer Trenner */
+    .emblem-divider {
+      display: flex; align-items: center; gap: 10px;
+      margin: 14px 0 10px;
     }
-    .emblem-label-top {
-      font-size: 13px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+    .emblem-divider-line {
+      width: 36px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,214,127,0.45));
+    }
+    .emblem-divider-line:last-child {
+      background: linear-gradient(90deg, rgba(255,214,127,0.45), transparent);
+    }
+    .emblem-divider-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--accent-gold);
+      box-shadow: 0 0 10px rgba(255,214,127,0.7), 0 0 4px rgba(255,214,127,1);
+    }
+
+    /* Label-Texte */
+    .emblem-label { text-align: center; }
+    .emblem-label-brand {
+      font-family: 'Neulis Cursive', cursive;
+      font-weight: bold;
+      font-size: 34px;
+      letter-spacing: 2px;
       color: var(--accent-gold);
-      text-shadow: 0 0 18px rgba(255,214,127,0.4);
+      text-shadow: 0 0 32px rgba(255,214,127,0.50), 0 2px 8px rgba(0,0,0,0.55);
+      line-height: 1;
+      margin-bottom: 5px;
     }
-    .emblem-label-bottom {
-      font-size: 12px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase;
+    .emblem-label-event {
+      font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase;
       color: var(--text-muted);
     }
 
-    @keyframes emblemRotate { to { transform: rotate(360deg); } }
+    @keyframes heartFloat {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-9px); }
+    }
     @keyframes emblemPulse {
-      from { opacity: 0.55; transform: scale(0.94); }
-      to   { opacity: 1;    transform: scale(1.06); }
+      from { opacity: 0.5; transform: scale(0.92); }
+      to   { opacity: 1;   transform: scale(1.08); }
     }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(40px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -335,7 +388,8 @@
 <div class="page-outer">
   <!-- Kopfzeilen-Emblem: Ring + Herz -->
   <div id="pageHeader" class="page-emblem">
-    <div class="emblem-ring-wrap" style="width:110px;height:110px;">
+    <div class="emblem-heart-wrap">
+      <div class="emblem-glow-orb"></div>
       <div class="emblem-heart-center">
         <svg viewBox="0 0 100 88" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -347,7 +401,6 @@
               <stop offset="0%" stop-color="#FFB347"/>
               <stop offset="100%" stop-color="#FFD67F"/>
             </linearGradient>
-            <!-- Gradient für "25"-Text: blau→amber→gold wie Swift -->
             <linearGradient id="hgTxt" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%"   stop-color="#4DA8FF"/>
               <stop offset="50%"  stop-color="#FFB347"/>
@@ -360,7 +413,6 @@
               <feDropShadow dx="-2" dy="3" stdDeviation="2" flood-color="rgba(0,0,0,0.70)"/>
             </filter>
           </defs>
-          <!-- 5 Herzen: scaleEffect(1.0 - index * 0.13), Zentrum (50, 42) -->
           <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
                 fill="url(#hgBA)" filter="url(#hShadow)"/>
           <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
@@ -375,7 +427,6 @@
           <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
                 fill="url(#hgBA)" filter="url(#hShadow)"
                 transform="translate(50,42) scale(0.48) translate(-50,-42)"/>
-          <!-- "25" etwas größer, weiterhin im innersten Herz -->
           <text x="50" y="44"
                 text-anchor="middle" dominant-baseline="central"
                 font-size="17" font-weight="900" font-family="system-ui,-apple-system,sans-serif"
@@ -384,9 +435,14 @@
         </svg>
       </div>
     </div>
+    <div class="emblem-divider">
+      <div class="emblem-divider-line"></div>
+      <div class="emblem-divider-dot"></div>
+      <div class="emblem-divider-line"></div>
+    </div>
     <div class="emblem-label">
-      <div class="emblem-label-top">FSBS</div>
-      <div class="emblem-label-bottom">Mitgliederversammlung</div>
+      <div class="emblem-label-brand">FSBS</div>
+      <div class="emblem-label-event">Mitgliederversammlung</div>
     </div>
   </div>
 
