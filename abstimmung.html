@@ -4,14 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Abstimmung · FSBS</title>
-  <meta name="theme-color" content="#061827">
+  <meta name="theme-color" content="#000000">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
-      --bg1: #061827; --bg2: #0A2235; --bg3: #04111C;
-      --red-light: #FF8A8A; --red-deep: #FF4D4D;
-      --green-light: #9FE34B; --green-deep: #3BD68A;
-      --accent1: #f97316; --accent2: #a855f7;
+      --bg1: #000000; --bg2: #0a0a0a; --bg3: #111111;
+      --red-light: #ffffff; --red-deep: #cccccc;
+      --green-light: #FFD700; --green-deep: #DAA520;
+      --accent1: #FFD700; --accent2: #DAA520;
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.65);
       --glass: rgba(255,255,255,.05);
@@ -34,12 +34,12 @@
     .code-input { width: 50px; height: 60px; font-size: 24px; font-weight: 800; text-align: center; background: rgba(255,255,255,.08); border: 2px solid rgba(255,255,255,.2); color: white; border-radius: 12px; outline: none; transition: 0.2s; }
     .code-input:focus { border-color: var(--accent1); background: rgba(255,255,255,.12); transform: translateY(-2px); }
 
-    .btnPrimary { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #000; font-weight: 800; font-size: 16px; border: none; border-radius: 16px; cursor: pointer; transition: transform .15s; margin-top: 20px; box-shadow: 0 8px 24px rgba(249,115,22,0.2); }
+    .btnPrimary { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #000; font-weight: 800; font-size: 16px; border: none; border-radius: 16px; cursor: pointer; transition: transform .15s; margin-top: 20px; box-shadow: 0 8px 24px rgba(255,215,0,0.2); }
     .btnPrimary:active { transform: scale(0.98); }
     .btnPrimary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
     .optBtn { width: 100%; padding: 16px; background: rgba(255,255,255,.05); border: 1.5px solid var(--border); border-radius: 16px; color: white; font-size: 16px; font-weight: 600; text-align: left; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .optBtn.selected { background: linear-gradient(135deg, rgba(249,115,22,.15), rgba(168,85,247,.15)); border-color: var(--accent1); box-shadow: 0 8px 24px rgba(249,115,22,.2); }
+    .optBtn.selected { background: linear-gradient(135deg, rgba(255,215,0,.15), rgba(218,165,32,.15)); border-color: var(--accent1); box-shadow: 0 8px 24px rgba(255,215,0,.2); }
 
     .delegationSection { margin-top: 20px; padding: 18px; border-radius: 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); }
     .delegationTitle { font-size: 15px; font-weight: 700; color: white; margin-bottom: 12px; }
@@ -77,11 +77,10 @@
   <div class="radial-glow" id="bgGlow"></div>
 
   <div class="wrap" id="mainWrap">
-    <div id="loadingState" style="text-align:center; color: var(--muted);">Lade Abstimmung...</div>
+    <div id="loadingState" style="text-align:center; color: var(--muted);">Lade System...</div>
   </div>
 
 <script>
-  // Falls das Skript komplett abstürzt, zeigt dieser Block das Problem SOFORT auf dem Display
   window.onerror = function(msg, url, lineNo, columnNo, error) {
     var wrap = document.getElementById("mainWrap");
     if(wrap) {
@@ -108,10 +107,8 @@
   let currentSession = null;
   let voterCode = null;
 
-  function getToken() { return new URLSearchParams(location.search).get("s"); }
-
-  function getVoterToken(sessionToken) {
-    const key = "vt_" + sessionToken;
+  function getVoterToken(sessionId) {
+    const key = "vt_" + sessionId;
     let vt = sessionStorage.getItem(key);
     if (!vt) { 
       vt = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') 
@@ -204,6 +201,23 @@
 
       if(callback) setTimeout(callback, 2500);
     }, 3000);
+  }
+
+  function showWelcomeScreen() {
+    wrap.innerHTML = '<div class="glass" style="text-align:center; animation: fadeUp 0.6s ease;">' +
+      '<h2 style="font-size:26px; font-weight:800; margin-bottom: 6px;">' + escapeHTML(currentSession.title) + '</h2>' +
+      '<p style="color:var(--muted); font-size:14px; margin-bottom: 30px;">Die Abstimmung ist geöffnet. Halte deinen Code bereit.</p>' +
+      '<button class="btnPrimary" id="startVoteBtn">Jetzt wählen</button>' +
+      '</div>';
+
+    document.getElementById('startVoteBtn').addEventListener('click', () => {
+      if (currentSession.activeGroups && currentSession.activeGroups.length > 0) {
+        showCodeEntry();
+      } else {
+        voterCode = null;
+        playTheatricalAnimation('open', showVotingOptions);
+      }
+    });
   }
 
   function showCodeEntry() {
@@ -367,7 +381,7 @@
 
       submitBtn.disabled = true; submitBtn.textContent = "Wird gespeichert...";
 
-      const vToken = getVoterToken(currentSession.token);
+      const vToken = getVoterToken(currentSession.id);
       const weight = 1 + delegationCount;
 
       const { error } = await sb.from("votes").insert({
@@ -381,7 +395,7 @@
 
       if(error) {
         if(error.code === "23505") {
-          sessionStorage.setItem("voted_" + currentSession.token, "1");
+          sessionStorage.setItem("voted_" + currentSession.id, "1");
           showBlockedState();
         } else {
           vMsg.textContent = "Fehler bei der Abgabe: " + error.message;
@@ -390,7 +404,7 @@
         return;
       }
 
-      sessionStorage.setItem("voted_" + currentSession.token, "1");
+      sessionStorage.setItem("voted_" + currentSession.id, "1");
       wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
         '<div style="font-size:40px; margin-bottom:10px;">✅</div>' +
         '<h2 style="font-size:24px; font-weight:800;">Stimme erfasst</h2>' +
@@ -399,31 +413,34 @@
     });
   }
 
-  // --- HAUPT-LOGIK MIT FEHLER-CATCHER ---
+  // --- HAUPT-LOGIK ---
   (async () => {
     try {
-        const token = getToken();
-        if (!token) {
-            wrap.innerHTML = '<div class="glass" style="text-align:center;">Ungültiger Link.<br><span style="font-size:12px; color:var(--muted);">Es wurde kein Token in der URL gefunden.</span></div>';
-            return;
-        }
+        const { data, error } = await sb.from("vote_sessions")
+          .select("*")
+          .eq("status", "open")
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
 
-        if (sessionStorage.getItem("voted_" + token)) { 
-            showBlockedState();
-            return; 
-        }
-
-        const { data, error } = await sb.from("vote_sessions").select("*").eq("token", token).maybeSingle();
-        
         if (error) throw new Error(error.message);
+        
         if (!data) {
-            wrap.innerHTML = '<div class="glass" style="text-align:center;">Abstimmung nicht gefunden.<br><span style="font-size:12px; color:var(--muted);">Der Link ist veraltet oder ungültig.</span></div>';
+            wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
+                '<div style="font-size:40px; margin-bottom:10px;">⏳</div>' +
+                '<h2 style="font-size:24px; font-weight:800;">Keine aktive Wahl</h2>' +
+                '<p style="color:var(--muted); font-size:14px; margin-top:8px;">Derzeit läuft keine Abstimmung. Bitte warte, bis der Wahlgang eröffnet wird.</p>' +
+                '</div>';
             return;
         }
         
         currentSession = data;
 
-        // Bestimme die aktiven Gruppen rückwärtskompatibel (group_ids Array oder altes group_id Feld)
+        if (sessionStorage.getItem("voted_" + currentSession.id)) { 
+            showBlockedState();
+            return; 
+        }
+
         let activeGroups = [];
         if (data.group_ids && data.group_ids.length > 0) {
             activeGroups = data.group_ids;
@@ -432,25 +449,20 @@
         }
         currentSession.activeGroups = activeGroups;
 
-        if (data.status !== "open") {
-            playTheatricalAnimation('closed');
-        } else {
-            if(activeGroups.length > 0) {
-                showCodeEntry();
-            } else {
-                const vToken = getVoterToken(data.token);
-                const { data: existingVote, error: vErr } = await sb.from("votes")
-                    .select("id").eq("session_id", data.id).eq("voter_token", vToken).maybeSingle();
-                
-                if (existingVote) {
-                    sessionStorage.setItem("voted_" + token, "1");
-                    showBlockedState();
-                    return;
-                }
-                voterCode = null;
-                playTheatricalAnimation('open', showVotingOptions);
+        if(activeGroups.length === 0) {
+            const vToken = getVoterToken(data.id);
+            const { data: existingVote } = await sb.from("votes")
+                .select("id").eq("session_id", data.id).eq("voter_token", vToken).maybeSingle();
+            
+            if (existingVote) {
+                sessionStorage.setItem("voted_" + currentSession.id, "1");
+                showBlockedState();
+                return;
             }
         }
+
+        showWelcomeScreen();
+
     } catch(err) {
         wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
             '<div style="font-size:30px; margin-bottom:10px;">⚠️</div>' +
