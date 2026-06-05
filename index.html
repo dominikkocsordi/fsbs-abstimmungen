@@ -398,28 +398,40 @@
       <div class="emblem-heart-center">
         <svg viewBox="0 0 100 88" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="hg1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <!-- index % 2 == 0: accentBlue → accentAmber -->
+            <linearGradient id="hgBA" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#4DA8FF"/>
               <stop offset="100%" stop-color="#FFB347"/>
             </linearGradient>
-            <linearGradient id="hg2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <!-- index % 2 == 1: accentAmber → accentGold -->
+            <linearGradient id="hgAG" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#FFB347"/>
               <stop offset="100%" stop-color="#FFD67F"/>
             </linearGradient>
-            <filter id="hDrop" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="-2" dy="5" stdDeviation="4" flood-color="rgba(0,0,0,0.65)"/>
-              <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(77,168,255,0.35)"/>
+            <filter id="hShadow" x="-25%" y="-25%" width="150%" height="150%">
+              <feDropShadow dx="-3" dy="6" stdDeviation="4" flood-color="rgba(0,0,0,0.60)"/>
             </filter>
           </defs>
-          <!-- 3 layered hearts, largest first -->
-          <path d="M50 82 C18 60 3 38 3 22 C3 9 13 1 26 1 C34 1 42 6 50 15 C58 6 66 1 74 1 C87 1 97 9 97 22 C97 38 82 60 50 82Z"
-                fill="url(#hg1)" filter="url(#hDrop)"/>
-          <path d="M50 82 C18 60 3 38 3 22 C3 9 13 1 26 1 C34 1 42 6 50 15 C58 6 66 1 74 1 C87 1 97 9 97 22 C97 38 82 60 50 82Z"
-                fill="url(#hg2)" opacity="0.78"
-                transform="translate(11.5,10) scale(0.77)"/>
-          <path d="M50 82 C18 60 3 38 3 22 C3 9 13 1 26 1 C34 1 42 6 50 15 C58 6 66 1 74 1 C87 1 97 9 97 22 C97 38 82 60 50 82Z"
-                fill="url(#hg1)" opacity="0.50"
-                transform="translate(23,20) scale(0.54)"/>
+          <!-- 5 Herzen wie in Swift: scaleEffect(1.0 - index * 0.13), Zentrum ca. (50, 42) -->
+          <!-- index 0: scale 1.00, blau→amber -->
+          <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
+                fill="url(#hgBA)" filter="url(#hShadow)"/>
+          <!-- index 1: scale 0.87, amber→gold -->
+          <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
+                fill="url(#hgAG)" filter="url(#hShadow)"
+                transform="translate(50,42) scale(0.87) translate(-50,-42)"/>
+          <!-- index 2: scale 0.74, blau→amber -->
+          <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
+                fill="url(#hgBA)" filter="url(#hShadow)"
+                transform="translate(50,42) scale(0.74) translate(-50,-42)"/>
+          <!-- index 3: scale 0.61, amber→gold -->
+          <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
+                fill="url(#hgAG)" filter="url(#hShadow)"
+                transform="translate(50,42) scale(0.61) translate(-50,-42)"/>
+          <!-- index 4: scale 0.48, blau→amber -->
+          <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
+                fill="url(#hgBA)" filter="url(#hShadow)"
+                transform="translate(50,42) scale(0.48) translate(-50,-42)"/>
         </svg>
         <span class="emblem-number">25</span>
       </div>
