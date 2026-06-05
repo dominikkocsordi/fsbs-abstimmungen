@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
   <title>Abstimmung · FSBS</title>
-  <meta content="#FDFCFB" name="theme-color"/>
+  <meta content="#F4EFEA" name="theme-color"/>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,20 +23,22 @@
     }
 
     :root {
-      /* Helle, minimalistische 2D-Farbpalette */
-      --bg-base: #FDFCFB;       /* Sehr helles Creme-Weiß */
-      --bg-gradient: #F5F2EE;   /* Sanfter Sand/Champagner-Ton für leichten Verlauf */
+      /* Warme, edle Gold/Weiß/Schwarz-Palette */
+      --bg-gradient-start: #F8F5F1; /* Sehr zartes Cremeweiß */
+      --bg-gradient-end: #E6D7C8;   /* Helles Champagner/Gold */
       
-      --accent: #B78873;        /* Das dunklere Roségold aus dem Herz für Kontrast */
-      --accent-hover: #A67864;  /* Leicht abgedunkeltes Akzent für Hover-Effekte */
-
-      --text-main: #1D1D1F;     /* Fast Schwarz für perfekten Lesekontrast */
-      --text-muted: #86868B;    /* Sauberes, lesbares Grau */
-
-      --glass-bg: rgba(255, 255, 255, 0.95);
-      --glass-border: rgba(0, 0, 0, 0.06);
+      --card-bg: #FFFFFF;           /* Reine weiße Karte für perfekten Kontrast */
       
-      --error-red: #E03131;
+      --accent: #B78873;            /* Das kräftigere Gold aus dem Herz */
+      --accent-light: rgba(183, 136, 115, 0.1); 
+      --accent-hover: #A67864;      
+
+      --text-main: #000000;         /* Tiefschwarz für maximale Lesbarkeit */
+      --text-muted: rgba(0, 0, 0, 0.55); 
+
+      --border-color: rgba(183, 136, 115, 0.25); /* Sanfter Gold-Schimmer im Rand */
+      
+      --error-red: #000000;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,7 +46,7 @@
     html, body { 
       min-height: 100%; 
       font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-      background: var(--bg-base); 
+      background: var(--bg-gradient-start); 
       color: var(--text-main); 
       overflow-x: hidden; 
       -webkit-font-smoothing: antialiased;
@@ -55,29 +57,29 @@
       font-weight: bold !important; 
     }
     
-    /* Hintergrund: Sehr subtiler, heller Verlauf */
+    /* Hintergrund: Sanfter, warmer Premium-Farbverlauf */
     .bg-gradient {
       position: fixed; inset: 0; z-index: -3;
-      background: radial-gradient(circle at 50% 0%, var(--bg-base) 0%, var(--bg-gradient) 100%);
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
     }
 
     /* Layout */
     .wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
     
-    /* Flache 2D Karte (Clean UI) */
+    /* Flache 2D Karte mit sehr weichem Schatten für die Trennung vom Hintergrund */
     .glass {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
       padding: 48px 36px;
       width: 100%;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
       animation: fadeUp 0.5s ease-out forwards;
     }
 
     /* Cleane 2D Typografie */
     .screen-title {
-      font-size: 36px;
+      font-size: 34px;
       color: var(--text-main);
       margin-bottom: 8px;
       text-align: center;
@@ -94,12 +96,6 @@
       line-height: 1.6;
     }
 
-    .success-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
     /* Flache Code-Eingabe */
     .code-container { display: flex; gap: 12px; justify-content: center; margin: 0 0 32px; }
     .code-input {
@@ -107,8 +103,8 @@
       font-size: 28px; text-align: center;
       font-family: 'Neulis Cursive', cursive;
       font-weight: bold;
-      background: #FFFFFF;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: var(--bg-gradient-start); /* Leicht abgesetzt von der weißen Karte */
+      border: 1px solid rgba(0,0,0,0.08);
       color: var(--text-main);
       border-radius: 12px;
       outline: none;
@@ -117,27 +113,28 @@
       caret-color: var(--accent);
       -webkit-appearance: none;
       appearance: none;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     }
     .code-input:focus {
+      background: #FFFFFF;
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(183, 136, 115, 0.15);
+      box-shadow: 0 0 0 3px var(--accent-light);
     }
 
     /* Flache 2D Buttons */
     .btnPrimary {
-      width: 100%; padding: 16px;
-      background: var(--accent);
-      color: #FFFFFF; font-weight: 600; font-size: 15px; letter-spacing: 0.5px;
-      border: none; border-radius: 12px; cursor: pointer; transition: background 0.2s ease;
+      width: 100%; padding: 18px;
+      background: var(--text-main); /* Schwarzer Button als starker Kontrast */
+      color: #FFFFFF; font-weight: 600; font-size: 15px; letter-spacing: 0.5px; text-transform: uppercase;
+      border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s ease;
     }
     .btnPrimary:hover:not(:disabled) {
-      background: var(--accent-hover);
+      background: var(--accent); /* Wechselt zu Gold beim Hover */
+      transform: translateY(-1px);
     }
     .btnPrimary:active:not(:disabled) { transform: scale(0.98); }
     .btnPrimary:disabled {
       background: rgba(0, 0, 0, 0.05); color: rgba(0, 0, 0, 0.3);
-      cursor: not-allowed;
+      cursor: not-allowed; transform: none;
     }
 
     /* Abstimmungs-Optionen - Minimalistisch */
@@ -149,34 +146,34 @@
       font-size: 15px; font-weight: 500; text-align: left; cursor: pointer;
       transition: all 0.2s ease; display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
     }
-    .optBtn:hover { border-color: rgba(0, 0, 0, 0.2); }
+    .optBtn:hover { border-color: rgba(0, 0, 0, 0.2); background: var(--bg-gradient-start); }
     .optBtn.selected {
-      background: rgba(183, 136, 115, 0.06);
-      border-color: var(--accent);
+      border-color: var(--text-main);
+      background: var(--accent-light);
     }
 
     .radio-circle {
       width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.2);
       display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s ease;
-      background: #FFF;
+      background: #FFFFFF;
     }
     .optBtn.selected .radio-circle {
-      border-color: var(--accent);
+      border-color: var(--text-main);
     }
     .radio-inner {
-      width: 10px; height: 10px; background: var(--accent); border-radius: 50%;
+      width: 10px; height: 10px; background: var(--text-main); border-radius: 50%;
       transform: scale(0); transition: transform 0.2s ease;
     }
     .optBtn.selected .radio-inner { transform: scale(1); }
 
     /* Stimmübertragung UI */
-    .delegationSection { margin: 24px 0; padding: 20px; border-radius: 12px; background: #F9F9F9; border: 1px solid rgba(0,0,0,0.04); }
+    .delegationSection { margin: 24px 0; padding: 20px; border-radius: 12px; background: var(--bg-gradient-start); border: 1px solid rgba(0, 0, 0, 0.04); }
     .delegationTitle { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
     .delegationCountRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
     .delegationCountRow label { font-size: 14px; font-weight: 500; color: var(--text-main); }
     .countStepper { display: flex; align-items: center; gap: 12px; }
-    .stepBtn { width: 32px; height: 32px; border-radius: 8px; background: #EAEAEA; border: none; color: var(--text-main); font-size: 18px; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
-    .stepBtn:hover:not(:disabled) { background: #DDDDDD; }
+    .stepBtn { width: 32px; height: 32px; border-radius: 8px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.1); color: var(--text-main); font-size: 18px; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
+    .stepBtn:hover:not(:disabled) { border-color: var(--text-main); }
     .stepBtn:disabled { opacity: 0.3; cursor: not-allowed; }
     .countDisplay { min-width: 24px; text-align: center; font-size: 16px; font-weight: 600; }
     .delegationNames { display: flex; flex-direction: column; gap: 12px; }
@@ -195,21 +192,21 @@
       appearance: none;
     }
     input[type="text"]::placeholder, .delegationNameInput::placeholder {
-      color: #A0A0A0 !important;
+      color: rgba(0,0,0,0.3) !important;
     }
     input[type="text"]:focus, .delegationNameInput:focus {
       border-color: var(--accent) !important;
-      box-shadow: 0 0 0 3px rgba(183, 136, 115, 0.15) !important;
+      box-shadow: 0 0 0 3px var(--accent-light) !important;
     }
 
     /* Flache Animationen */
     .anim-container { position: relative; width: 100%; height: 160px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; display: none; }
-    .main-icon { position: absolute; width: 70px; height: 70px; opacity: 0; transform: scale(0.8); }
-    .main-icon svg { width: 100%; height: 100%; fill: var(--accent); }
+    .main-icon { position: absolute; width: 60px; height: 60px; opacity: 0; transform: scale(0.8); }
+    .main-icon svg { width: 100%; height: 100%; fill: var(--text-main); }
     
     .anim-text { text-align: center; opacity: 0; transform: translateY(10px); }
-    .anim-title { font-size: 28px; color: var(--text-main); margin-bottom: 4px; font-weight: 600; }
-    .anim-sub { font-size: 13px; font-weight: 500; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
+    .anim-title { font-size: 24px; color: var(--text-main); margin-bottom: 4px; font-weight: 600; }
+    .anim-sub { font-size: 12px; font-weight: 500; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
 
     /* Minimalistisches Seiten-Emblem */
     .page-outer {
@@ -231,7 +228,6 @@
     .page-emblem.visible { opacity: 1; transform: translateY(0); }
 
     .emblem-heart-center { width: 90px; height: 90px; margin-bottom: 12px; }
-    /* mix-blend-mode entfernt, damit das transparente Herz auf hellem Hintergrund perfekt wirkt */
     .emblem-heart-center img { width: 100%; height: 100%; object-fit: contain; }
 
     .emblem-label { text-align: center; }
@@ -243,10 +239,11 @@
     .loading-pulse {
       animation: pulseText 1.5s infinite alternate ease-in-out;
     }
-    @keyframes pulseText { 0% { opacity: 0.4; } 100% { opacity: 1; } }
+    @keyframes pulseText { 0% { opacity: 0.3; } 100% { opacity: 1; } }
   </style>
 </head>
 <body>
+
 <div class="bg-gradient"></div>
 
 <div class="page-outer">
@@ -261,7 +258,7 @@
   </div>
 
   <div class="wrap" id="mainWrap">
-    <div id="loadingState" class="loading-pulse" style="text-align:center; color: var(--text-muted); font-weight: 500; font-size: 14px;">Lade System...</div>
+    <div id="loadingState" class="loading-pulse" style="text-align:center; color: var(--text-main); font-weight: 500; font-size: 14px;">Lade System...</div>
   </div>
 </div>
 
@@ -273,7 +270,7 @@
       if(h) { h.style.display='flex'; requestAnimationFrame(() => requestAnimationFrame(() => h.classList.add('visible'))); }
       wrap.innerHTML = `
         <div class="glass" style="text-align:center;">
-          <h2 class="font-cursive screen-title" style="color:var(--error-red);">System-Fehler</h2>
+          <h2 class="font-cursive screen-title">System-Fehler</h2>
           <p class="screen-subtitle" style="color:var(--text-main);">${msg}</p>
           <p style="color:var(--text-muted); font-size:12px;">Zeile: ${lineNo}</p>
         </div>`;
@@ -289,7 +286,6 @@
   let currentSession = null;
   let voterCode = null;
 
-  // Watchdog Timer
   const watchdogTimer = setTimeout(() => {
     if (wrap && wrap.innerHTML.includes('Lade System')) {
       const h = document.getElementById('pageHeader');
@@ -363,18 +359,16 @@
     const icon = document.getElementById("aIcon");
     const text = document.getElementById("aText");
 
-    if(!isTxtOpen) icon.querySelector('svg').style.fill = "var(--error-red)";
-
     setTimeout(() => {
-      icon.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+      icon.style.transition = "transform 0.4s ease, opacity 0.4s ease";
       icon.style.opacity = "1"; icon.style.transform = "scale(1)";
       
       setTimeout(() => {
-        text.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+        text.style.transition = "transform 0.4s ease, opacity 0.4s ease";
         text.style.opacity = "1"; text.style.transform = "translateY(0)";
       }, 100);
 
-      if(callback) setTimeout(callback, 1500);
+      if(callback) setTimeout(callback, 1200);
     }, 50);
   }
 
@@ -410,7 +404,7 @@
           <input type="text" maxlength="1" class="code-input">
           <input type="text" maxlength="1" class="code-input">
         </div>
-        <div id="codeError" style="color:var(--error-red); font-size:14px; font-weight:500; min-height:20px; margin-bottom:24px; text-align:center;"></div>
+        <div id="codeError" style="font-size:13px; font-weight:500; min-height:20px; margin-bottom:24px; text-align:center;"></div>
         <button class="btnPrimary" id="verifyBtn">Bestätigen</button>
       </div>`;
 
@@ -495,7 +489,7 @@
         <div id="optList">${optsHtml}</div>
         ${delegationHtml}
         <button class="btnPrimary" id="submitVote" disabled style="margin-top:16px;">Abstimmen</button>
-        <div id="vMsg" style="margin-top:16px; font-size:14px; font-weight:500; color:var(--error-red); text-align:center;"></div>
+        <div id="vMsg" style="margin-top:16px; font-size:13px; font-weight:500; text-align:center;"></div>
       </div>`;
 
     const submitBtn = document.getElementById("submitVote");
@@ -656,7 +650,7 @@
         wrap.innerHTML = `
           <div class="glass" style="text-align:center;">
             <h3 class="font-cursive screen-title">Fehler</h3>
-            <p class="screen-subtitle" style="color:var(--error-red);">${err.message}</p>
+            <p class="screen-subtitle" style="color:var(--text-main);">${err.message}</p>
           </div>`;
     }
   })();
