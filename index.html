@@ -4,17 +4,16 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
   <title>Abstimmung · FSBS</title>
-  <meta content="#030303" name="theme-color"/>
+  <meta content="#000000" name="theme-color"/>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <style>
-    /* Lokale Cursive Font Einbindung */
     @font-face {
       font-family: 'Neulis Cursive';
       src: url('./fonts/neulis-cursive-regular.otf') format('opentype');
@@ -24,34 +23,18 @@
     }
 
     :root {
-      /* Weicher, warmer Dark-Mode Hintergrund (Gold/Schwarz-Fokus) */
-      --bg-base: #030303;      /* Fast reines Schwarz für die Ränder/Unten */
-      --bg-surface: #0f0c0a;   /* Sehr dunkles Schwarz-Braun (greift das Roségold extrem subtil auf) */
-      --bg-highlight: #1c1511; /* Der "Spotlight"-Bereich oben */
-
-      --accent-rosegold-light: #C49A84;
-      --accent-rosegold-dark: #B78873;
+      /* Minimalistische Farbpalette aus dem Herz */
+      --bg-base: #000000;
+      --accent-rosegold: #C49A84;
       --accent-champagne: #D8C3A9;
       --accent-cream: #EFEBE6;
-      --accent-blue: #D1E1EC;
+
+      --text-main: rgba(255, 255, 255, 0.95);
+      --text-muted: rgba(255, 255, 255, 0.50);
+
+      --glass-bg: rgba(25, 25, 25, 0.3);
+      --glass-border: rgba(255, 255, 255, 0.08);
       
-      --accent-glow: rgba(196, 154, 132, 0.25);
-      --accent-blue-glow: rgba(209, 225, 236, 0.20);
-
-      --text-main: rgba(239, 235, 230, 0.95);
-      --text-muted: rgba(239, 235, 230, 0.60);
-
-      /* LIQUID GLASS Variablen - Extrem Glossy */
-      --glass-bg: linear-gradient(135deg, rgba(239, 235, 230, 0.08) 0%, rgba(239, 235, 230, 0.01) 100%);
-      --glass-border: rgba(239, 235, 230, 0.1);
-      --glass-border-top: rgba(255, 255, 255, 0.45);
-      --glass-border-left: rgba(255, 255, 255, 0.25);
-
-      --input-bg: linear-gradient(135deg, rgba(239, 235, 230, 0.08) 0%, rgba(239, 235, 230, 0.02) 100%);
-      --input-border: rgba(239, 235, 230, 0.15);
-      --input-border-bottom: rgba(196, 154, 132, 0.6);
-      --input-focus-bg: linear-gradient(135deg, rgba(196, 154, 132, 0.15) 0%, rgba(196, 154, 132, 0.04) 100%);
-
       --error-red: #FF6B6B;
     }
 
@@ -66,267 +49,184 @@
       -webkit-font-smoothing: antialiased;
     }
     
-    /* Typografie-Klassen */
     .font-cursive { 
       font-family: 'Neulis Cursive', cursive; 
       font-weight: bold !important; 
-      letter-spacing: 1px;
     }
     
-    /* Background & Ambient Animations */
+    /* Hintergrund: Herz-Farbverlauf mit starkem Milchglas-Filter */
     .bg-gradient {
+      position: fixed; inset: 0; z-index: -3;
+      background: radial-gradient(circle at 50% 40%, 
+        var(--accent-cream) 0%, 
+        var(--accent-champagne) 25%, 
+        var(--accent-rosegold) 50%, 
+        var(--bg-base) 90%
+      );
+    }
+
+    .bg-milchglas {
       position: fixed; inset: 0; z-index: -2;
-      /* Radiales Spotlight von oben Mitte, passend zum transparenten Herz */
-      background: radial-gradient(ellipse at 50% 0%, var(--bg-highlight) 0%, var(--bg-surface) 45%, var(--bg-base) 100%);
-    }
-
-    .radial-glow {
-      position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%);
-      width: 140vw; height: 140vw; border-radius: 50%; z-index: -1;
-      background: radial-gradient(circle, var(--glow-color, rgba(196, 154, 132, 0.06)) 0%, transparent 50%);
-      transition: background 1.5s ease;
-      pointer-events: none;
-      animation: pulseLight 10s infinite alternate ease-in-out;
-    }
-
-    @keyframes pulseLight {
-      0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.95); }
-      100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+      background: rgba(0, 0, 0, 0.70); /* Dunkelt den Hintergrund für Lesbarkeit ab */
+      backdrop-filter: blur(80px) saturate(120%);
+      -webkit-backdrop-filter: blur(80px) saturate(120%);
     }
 
     /* Layout */
     .wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
     
-    /* LIQUID GLASS - Hauptelement */
+    /* Minimalistisches Glas-Panel */
     .glass {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-top: 1px solid var(--glass-border-top);
-      border-left: 1px solid var(--glass-border-left);
-      border-radius: 36px;
+      border-radius: 20px;
       padding: 48px 36px;
       width: 100%;
-      backdrop-filter: blur(50px) saturate(180%);
-      -webkit-backdrop-filter: blur(50px) saturate(180%);
-      box-shadow: 
-        0 30px 70px rgba(0,0,0,0.95), 
-        inset 0 1px 3px rgba(255,255,255,0.5), 
-        inset 0 -12px 32px var(--accent-glow);
-      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      position: relative;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      animation: fadeUp 0.6s ease-out forwards;
     }
 
-    /* Standardisierte UI Elemente */
+    /* Saubere Typografie ohne harte Schatten */
     .screen-title {
-      font-size: 46px;
-      color: transparent;
-      background: linear-gradient(135deg, var(--accent-cream), var(--accent-rosegold-light));
-      -webkit-background-clip: text;
-      background-clip: text;
-      margin-bottom: 12px;
+      font-size: 38px;
+      color: var(--accent-champagne);
+      margin-bottom: 8px;
       text-align: center;
       line-height: 1.1;
-      text-shadow: 0 4px 20px rgba(196, 154, 132, 0.25);
+      font-weight: normal;
     }
     
     .screen-subtitle {
       color: var(--text-muted);
       font-size: 15px;
       font-weight: 300;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
       text-align: center;
       line-height: 1.6;
     }
 
     .success-icon {
-      font-size: 56px;
-      margin-bottom: 20px;
+      font-size: 48px;
+      margin-bottom: 16px;
       text-align: center;
-      filter: drop-shadow(0 0 24px rgba(196, 154, 132, 0.4));
+      opacity: 0.9;
     }
 
-    /* Code Inputs — Liquid Glass */
-    .code-container { display: flex; gap: 14px; justify-content: center; margin: 0 0 40px; }
+    /* Minimalistische Code-Eingabe */
+    .code-container { display: flex; gap: 12px; justify-content: center; margin: 0 0 32px; }
     .code-input {
-      width: 60px; height: 75px;
-      font-size: 34px; text-align: center;
+      width: 54px; height: 68px;
+      font-size: 28px; text-align: center;
       font-family: 'Neulis Cursive', cursive;
       font-weight: bold;
-      background: var(--input-bg);
-      backdrop-filter: blur(35px) saturate(150%);
-      -webkit-backdrop-filter: blur(35px) saturate(150%);
-      border: 1px solid var(--input-border);
-      border-top: 1px solid var(--glass-border-top);
-      border-left: 1px solid var(--glass-border-left);
-      border-bottom: 2px solid var(--input-border-bottom);
-      color: var(--accent-rosegold-light);
-      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      border-radius: 8px;
       outline: none;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow:
-        inset 0 2px 4px rgba(255,255,255,0.3),
-        0 8px 24px rgba(0,0,0,0.5);
+      transition: all 0.2s ease;
       text-transform: uppercase;
-      caret-color: var(--accent-rosegold-light);
+      caret-color: var(--accent-champagne);
       -webkit-appearance: none;
       appearance: none;
     }
     .code-input:focus {
-      background: var(--input-focus-bg);
-      border-color: rgba(196, 154, 132, 0.50);
-      border-top-color: rgba(255,255,255,0.50);
-      border-bottom-color: var(--accent-rosegold-dark);
-      transform: translateY(-7px) scale(1.06);
-      color: var(--accent-cream);
-      text-shadow: 0 0 18px rgba(196, 154, 132, 0.65);
-      box-shadow:
-        inset 0 2px 5px rgba(255,255,255,0.4),
-        0 14px 32px rgba(196, 154, 132, 0.25),
-        0 4px 12px rgba(0,0,0,0.4);
-    }
-    .code-input:not(:placeholder-shown) {
-      border-color: rgba(196, 154, 132, 0.40);
-      box-shadow:
-        inset 0 1px 3px rgba(255,255,255,0.3),
-        0 0 16px rgba(196, 154, 132, 0.15),
-        0 4px 12px rgba(0,0,0,0.3);
+      background: rgba(255, 255, 255, 0.06);
+      border-bottom-color: var(--accent-champagne);
     }
 
-    /* Buttons - Ultra Glossy */
+    /* Flache, elegante Buttons */
     .btnPrimary {
-      width: 100%; padding: 20px;
-      background: linear-gradient(135deg, var(--accent-rosegold-light) 0%, var(--accent-rosegold-dark) 100%);
-      color: #111; font-weight: 800; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase;
-      border: none; border-radius: 18px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 
-        0 10px 30px rgba(183, 136, 115, 0.35),
-        inset 0 2px 4px rgba(255, 255, 255, 0.6),
-        inset 0 -2px 6px rgba(0,0,0,0.15);
-      position: relative;
-      overflow: hidden;
+      width: 100%; padding: 18px;
+      background: var(--accent-champagne);
+      color: #000; font-weight: 600; font-size: 15px; letter-spacing: 0.5px; text-transform: uppercase;
+      border: none; border-radius: 12px; cursor: pointer; transition: background 0.2s ease;
     }
-    .btnPrimary::after {
-      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-      transform: skewX(-20deg);
-      transition: 0.5s;
-    }
-    .btnPrimary:hover:not(:disabled)::after { left: 150%; }
     .btnPrimary:hover:not(:disabled) {
-      box-shadow: 0 15px 40px rgba(196, 154, 132, 0.50), inset 0 2px 4px rgba(255, 255, 255, 0.8), inset 0 -2px 6px rgba(0,0,0,0.1);
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, var(--accent-champagne), var(--accent-rosegold-light));
+      background: var(--accent-cream);
     }
     .btnPrimary:active:not(:disabled) { transform: scale(0.98); }
     .btnPrimary:disabled {
-      background: rgba(255, 255, 255, 0.04); color: rgba(255, 255, 255, 0.2);
-      cursor: not-allowed; box-shadow: none; border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.2);
+      cursor: not-allowed;
     }
 
-    /* Voting Options */
+    /* Abstimmungs-Optionen */
     .optBtn {
-      width: 100%; padding: 20px 24px; 
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
+      width: 100%; padding: 18px 20px; 
+      background: transparent;
       border: 1px solid var(--glass-border); 
-      border-top: 1px solid rgba(255,255,255,0.25);
-      border-left: 1px solid rgba(255,255,255,0.15);
-      border-radius: 18px; color: var(--text-main);
-      font-size: 16px; font-weight: 400; text-align: left; cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 18px; margin-bottom: 14px;
-      box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 4px 16px rgba(0,0,0,0.3);
+      border-radius: 12px; color: var(--text-main);
+      font-size: 15px; font-weight: 400; text-align: left; cursor: pointer;
+      transition: all 0.2s ease; display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
     }
-    .optBtn:hover { background: rgba(196, 154, 132, 0.08); border-color: rgba(196, 154, 132, 0.35); }
+    .optBtn:hover { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.15); }
     .optBtn.selected {
-      background: rgba(196, 154, 132, 0.15); border-color: var(--accent-rosegold-light);
-      box-shadow: 0 8px 28px rgba(196, 154, 132, 0.20), inset 0 1px 3px rgba(255,255,255,0.3);
+      background: rgba(216, 195, 169, 0.08); /* Champagner transparent */
+      border-color: var(--accent-champagne);
     }
 
     .radio-circle {
-      width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.25);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+      width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.3);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s ease;
     }
     .optBtn.selected .radio-circle {
-      border-color: var(--accent-rosegold-light);
-      box-shadow: 0 0 14px rgba(196, 154, 132, 0.40), inset 0 1px 2px rgba(0,0,0,0.4);
+      border-color: var(--accent-champagne);
     }
     .radio-inner {
-      width: 12px; height: 12px; background: linear-gradient(135deg, var(--accent-cream), var(--accent-rosegold-light)); border-radius: 50%;
-      transform: scale(0); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 0 12px rgba(196, 154, 132, 0.6);
+      width: 10px; height: 10px; background: var(--accent-champagne); border-radius: 50%;
+      transform: scale(0); transition: transform 0.2s ease;
     }
     .optBtn.selected .radio-inner { transform: scale(1); }
 
-    /* Delegation UI */
-    .delegationSection { margin: 28px 0; padding: 24px; border-radius: 20px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 2px 12px rgba(0,0,0,0.6); }
-    .delegationTitle { font-size: 13px; font-weight: 600; color: var(--accent-blue); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
-    .delegationCountRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
-    .delegationCountRow label { font-size: 15px; color: var(--text-muted); }
-    .countStepper { display: flex; align-items: center; gap: 14px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 1px 4px rgba(0,0,0,0.6); }
-    .stepBtn { width: 36px; height: 36px; border-radius: 10px; background: transparent; border: none; color: var(--accent-rosegold-light); font-size: 22px; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
-    .stepBtn:hover:not(:disabled) { background: rgba(196, 154, 132, 0.2); }
-    .stepBtn:disabled { opacity: 0.2; cursor: not-allowed; color: white; }
-    .countDisplay { min-width: 28px; text-align: center; font-size: 18px; font-weight: 600; color: var(--accent-rosegold-light); }
+    /* Stimmübertragung UI */
+    .delegationSection { margin: 24px 0; padding: 20px; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); }
+    .delegationTitle { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+    .delegationCountRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .delegationCountRow label { font-size: 14px; color: var(--text-main); }
+    .countStepper { display: flex; align-items: center; gap: 12px; }
+    .stepBtn { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.05); border: none; color: var(--text-main); font-size: 18px; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
+    .stepBtn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+    .stepBtn:disabled { opacity: 0.2; cursor: not-allowed; }
+    .countDisplay { min-width: 24px; text-align: center; font-size: 16px; font-weight: 500; }
+    .delegationNames { display: flex; flex-direction: column; gap: 12px; }
 
-    .delegationNames { display: flex; flex-direction: column; gap: 16px; }
-
-    /* Text-Inputs — Liquid Glass */
     input[type="text"], .delegationNameInput {
-      background: var(--input-bg) !important;
-      backdrop-filter: blur(35px) saturate(150%) !important;
-      -webkit-backdrop-filter: blur(35px) saturate(150%) !important;
-      border: 1px solid var(--input-border) !important;
-      border-top: 1px solid var(--glass-border-top) !important;
-      border-left: 1px solid var(--glass-border-left) !important;
-      border-bottom: 1.5px solid var(--input-border-bottom) !important;
+      background: rgba(255,255,255,0.02) !important;
+      border: 1px solid var(--glass-border) !important;
       color: var(--text-main) !important;
-      padding: 18px 20px;
-      border-radius: 16px;
+      padding: 14px 16px;
+      border-radius: 10px;
       outline: none;
-      font-size: 16px;
-      font-weight: 400;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px;
       width: 100%;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow:
-        inset 0 2px 4px rgba(255,255,255,0.2),
-        0 4px 16px rgba(0,0,0,0.4) !important;
-      caret-color: var(--accent-rosegold-light);
+      transition: all 0.2s ease;
       -webkit-appearance: none;
       appearance: none;
     }
     input[type="text"]::placeholder, .delegationNameInput::placeholder {
-      color: rgba(239, 235, 230, 0.3) !important;
+      color: var(--text-muted) !important;
     }
     input[type="text"]:focus, .delegationNameInput:focus {
-      background: var(--input-focus-bg) !important;
-      border-color: rgba(196, 154, 132, 0.40) !important;
-      border-top-color: rgba(255, 255, 255, 0.45) !important;
-      border-bottom-color: var(--accent-rosegold-dark) !important;
-      box-shadow:
-        inset 0 2px 5px rgba(255,255,255,0.3),
-        0 0 22px rgba(196, 154, 132, 0.20),
-        0 8px 24px rgba(0,0,0,0.5) !important;
-      transform: translateY(-2px);
+      background: rgba(255,255,255,0.05) !important;
+      border-color: var(--accent-champagne) !important;
     }
 
-    /* Theatrical Animations */
-    .anim-container { position: relative; width: 340px; height: 340px; display: flex; justify-content: center; align-items: center; margin: 0 auto 40px; display: none; }
-    .loader-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--anim-color-light); border-right-color: var(--anim-color-deep); opacity: 0; transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 15px var(--anim-color-light)); }
-    .ambient-glow { position: absolute; width: 440px; height: 440px; border-radius: 50%; background: radial-gradient(circle, var(--anim-color-deep) 0%, transparent 60%); opacity: 0; transform: scale(0.5); pointer-events: none; mix-blend-mode: screen; }
-    .white-flash { position: absolute; width: 200px; height: 200px; border-radius: 50%; background: #FFF; opacity: 0; transform: scale(0.2); filter: blur(5px); }
-    .shockwave { position: absolute; width: 200px; height: 200px; border-radius: 50%; border: 1.5px solid var(--anim-color-light); opacity: 0; transform: scale(0.5); box-shadow: 0 0 40px var(--anim-color-light), inset 0 0 40px var(--anim-color-light); }
-    .main-icon { position: absolute; width: 150px; height: 150px; opacity: 0; transform: scale(0); filter: drop-shadow(0 10px 20px rgba(0,0,0,0.9)) drop-shadow(0 0 40px var(--anim-color-deep)); }
-    .main-icon svg { width: 100%; height: 100%; }
+    /* Reduzierte Animationen */
+    .anim-container { position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; display: none; }
+    .main-icon { position: absolute; width: 80px; height: 80px; opacity: 0; transform: scale(0.8); }
+    .main-icon svg { width: 100%; height: 100%; fill: var(--accent-champagne); }
+    
+    .anim-text { text-align: center; opacity: 0; transform: translateY(10px); }
+    .anim-title { font-size: 32px; color: var(--accent-champagne); margin-bottom: 4px; }
+    .anim-sub { font-size: 13px; font-weight: 500; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
 
-    .anim-text { text-align: center; opacity: 0; transform: translateY(40px); }
-    .anim-title { font-size: 52px; color: transparent; background: linear-gradient(135deg, var(--accent-cream), var(--accent-rosegold-light)); -webkit-background-clip: text; background-clip: text; line-height: 1.1; margin-bottom: 8px; text-shadow: 0 4px 12px rgba(0,0,0,0.9); }
-    .anim-sub { font-size: 15px; font-weight: 600; letter-spacing: 5px; color: var(--text-muted); text-transform: uppercase; }
-
-    /* ─── Seiten-Emblem ─── */
+    /* Minimalistisches Seiten-Emblem */
     .page-outer {
-      width: 100%; max-width: 520px; margin: 0 auto;
+      width: 100%; max-width: 480px; margin: 0 auto;
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 40px 20px 60px;
@@ -336,111 +236,31 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 28px;
+      margin-bottom: 40px;
       opacity: 0;
-      transform: translateY(-16px) scale(0.88);
-      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(-10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
-    .page-emblem.visible { opacity: 1; transform: translateY(0) scale(1); }
+    .page-emblem.visible { opacity: 1; transform: translateY(0); }
 
-    /* Glow-Orb hinter dem Bild */
-    .emblem-glow-orb {
-      position: absolute;
-      width: 180px; height: 180px; border-radius: 50%;
-      background: radial-gradient(circle, var(--accent-glow) 0%, var(--accent-blue-glow) 45%, transparent 70%);
-      animation: emblemPulse 4.2s ease-in-out infinite alternate;
-      pointer-events: none;
-    }
+    .emblem-heart-center { width: 100px; height: 100px; margin-bottom: 16px; }
+    .emblem-heart-center img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: screen; opacity: 0.9; }
 
-    /* Herz Bild Container */
-    .emblem-heart-wrap {
-      position: relative;
-      display: flex; align-items: center; justify-content: center;
-      width: 140px; height: 140px;
-    }
-    
-    .emblem-heart-center {
-      width: 140px; height: 140px;
-      position: relative; z-index: 2;
-      animation: heartFloat 5.5s ease-in-out infinite;
-    }
-    
-    .emblem-heart-center img {
-      width: 100%; 
-      height: 100%; 
-      object-fit: contain; 
-      mix-blend-mode: screen; 
-      filter: drop-shadow(0 10px 24px rgba(196, 154, 132, 0.35));
-    }
-
-    /* Dekorativer Trenner */
-    .emblem-divider {
-      display: flex; align-items: center; gap: 10px;
-      margin: 14px 0 10px;
-    }
-    .emblem-divider-line {
-      width: 36px; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(196, 154, 132, 0.55));
-    }
-    .emblem-divider-line:last-child {
-      background: linear-gradient(90deg, rgba(196, 154, 132, 0.55), transparent);
-    }
-    .emblem-divider-dot {
-      width: 4px; height: 4px; border-radius: 50%;
-      background: var(--accent-rosegold-light);
-      box-shadow: 0 0 10px rgba(196, 154, 132, 0.8), 0 0 4px rgba(196, 154, 132, 1);
-    }
-
-    /* Label-Texte */
     .emblem-label { text-align: center; }
-    .emblem-label-brand {
-      font-family: 'Neulis Cursive', cursive;
-      font-weight: bold;
-      font-size: 34px;
-      letter-spacing: 2px;
-      color: transparent;
-      background: linear-gradient(135deg, var(--accent-cream), var(--accent-rosegold-light));
-      -webkit-background-clip: text;
-      background-clip: text;
-      text-shadow: 0 0 32px rgba(196, 154, 132, 0.4), 0 2px 8px rgba(0,0,0,0.9);
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-    .emblem-label-event {
-      font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--accent-blue);
-      opacity: 0.9;
-    }
+    .emblem-label-brand { font-family: 'Neulis Cursive', cursive; font-size: 24px; color: var(--accent-cream); line-height: 1; margin-bottom: 4px; }
+    .emblem-label-event { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
 
-    @keyframes heartFloat {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-9px); }
-    }
-    @keyframes emblemPulse {
-      from { opacity: 0.5; transform: scale(0.92); }
-      to   { opacity: 1;   transform: scale(1.08); }
-    }
-
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(40px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    @keyframes pulseAmbientAnim { 0% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.15); opacity: 0.7; } 100% { transform: scale(1); opacity: 0.4; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 <div class="bg-gradient"></div>
-<div class="radial-glow" id="bgGlow"></div>
+<div class="bg-milchglas"></div>
 
 <div class="page-outer">
   <div id="pageHeader" class="page-emblem">
-    <div class="emblem-heart-wrap">
-      <div class="emblem-glow-orb"></div>
-      <div class="emblem-heart-center">
-        <img src="heart.png" alt="25 Jahre">
-      </div>
-    </div>
-    <div class="emblem-divider">
-      <div class="emblem-divider-line"></div>
-      <div class="emblem-divider-dot"></div>
-      <div class="emblem-divider-line"></div>
+    <div class="emblem-heart-center">
+      <img src="heart.png" alt="25 Jahre">
     </div>
     <div class="emblem-label">
       <div class="emblem-label-brand">FSBS</div>
@@ -449,7 +269,7 @@
   </div>
 
   <div class="wrap" id="mainWrap">
-    <div id="loadingState" style="text-align:center; color: var(--text-muted); font-weight: 300; letter-spacing: 2px; text-transform: uppercase; font-size: 14px;">Lade System...</div>
+    <div id="loadingState" style="text-align:center; color: var(--text-muted); font-weight: 400; font-size: 14px;">Lade System...</div>
   </div>
 </div>
 
@@ -461,10 +281,9 @@
       if(h) { h.style.display='flex'; requestAnimationFrame(() => requestAnimationFrame(() => h.classList.add('visible'))); }
       wrap.innerHTML = `
         <div class="glass" style="text-align:center;">
-          <div class="success-icon" style="color: var(--error-red); filter: drop-shadow(0 0 20px rgba(255,107,107,0.4));">⚠️</div>
-          <h2 class="font-cursive screen-title" style="color:var(--text-main); background: none; text-shadow: 0 0 20px rgba(255,107,107,0.5);">System-Fehler</h2>
-          <p class="screen-subtitle">${msg}</p>
-          <p style="color:rgba(255,255,255,0.2); font-size:12px;">Zeile: ${lineNo}</p>
+          <h2 class="font-cursive screen-title" style="color:var(--text-main);">System-Fehler</h2>
+          <p class="screen-subtitle" style="color:var(--error-red);">${msg}</p>
+          <p style="color:var(--text-muted); font-size:12px;">Zeile: ${lineNo}</p>
         </div>`;
     }
     return false;
@@ -477,7 +296,7 @@
   try {
       sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   } catch(e) {
-      throw new Error("Datenbank-Treiber fehlt. Evtl. blockiert ein Adblocker die Supabase-Verbindung.");
+      throw new Error("Datenbank-Treiber fehlt.");
   }
 
   const wrap = document.getElementById("mainWrap");
@@ -492,7 +311,7 @@
   function hideHeader() {
     const h = document.getElementById('pageHeader');
     h.classList.remove('visible');
-    setTimeout(() => { h.style.display = 'none'; }, 420);
+    setTimeout(() => { h.style.display = 'none'; }, 400);
   }
 
   function getVoterToken(sessionId) {
@@ -517,7 +336,6 @@
     showHeader();
     wrap.innerHTML = `
       <div class="glass" style="text-align:center;">
-        <div class="success-icon" style="filter: drop-shadow(0 0 20px rgba(255,255,255,0.15));">🔒</div>
         <h2 class="font-cursive screen-title">Bereits abgestimmt</h2>
         <p class="screen-subtitle">Du hast an dieser Abstimmung bereits teilgenommen.</p>
       </div>`;
@@ -529,70 +347,35 @@
     const titleText = isTxtOpen ? 'Wahl eröffnet' : 'Wahl geschlossen';
     const subText = isTxtOpen ? 'STIMMABGABE FREIGEGEBEN' : 'KEINE WEITEREN STIMMEN';
     
-    const iconSand = `<svg viewBox="0 0 24 24" fill="url(#gradGold)"><defs><linearGradient id="gradGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EFEBE6"/><stop offset="100%" stop-color="#C49A84"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`;
-    const iconRed = `<svg viewBox="0 0 24 24" fill="url(#gradRed)"><defs><linearGradient id="gradRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EFEBE6"/><stop offset="100%" stop-color="#FF6B6B"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>`;
-    const iconSvg = isTxtOpen ? iconSand : iconRed;
+    const iconPath = isTxtOpen 
+      ? "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" 
+      : "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z";
 
     wrap.innerHTML = `
       <div class="anim-container" id="animBox" style="display:flex;">
-        <div class="ambient-glow" id="aGlow"></div>
-        <div class="loader-ring" id="aLoader"></div>
-        <div class="white-flash" id="aFlash"></div>
-        <div class="shockwave" id="aShock"></div>
-        <div class="main-icon" id="aIcon">${iconSvg}</div>
+        <div class="main-icon" id="aIcon"><svg viewBox="0 0 24 24"><path d="${iconPath}"/></svg></div>
       </div>
       <div class="anim-text" id="aText">
         <div class="font-cursive anim-title">${titleText}</div>
         <div class="anim-sub">${subText}</div>
       </div>`;
 
-    const root = document.documentElement;
-    if(type === 'open') {
-      root.style.setProperty('--anim-color-light', '#C49A84');
-      root.style.setProperty('--anim-color-deep', '#B78873');
-      document.getElementById("bgGlow").style.setProperty('--glow-color', 'rgba(196, 154, 132, 0.15)');
-    } else {
-      root.style.setProperty('--anim-color-light', '#FF8A8A');
-      root.style.setProperty('--anim-color-deep', '#FF6B6B');
-      document.getElementById("bgGlow").style.setProperty('--glow-color', 'rgba(255, 107, 107, 0.10)');
-    }
-
-    const loader = document.getElementById("aLoader");
-    const flash = document.getElementById("aFlash");
-    const shock = document.getElementById("aShock");
     const icon = document.getElementById("aIcon");
-    const glow = document.getElementById("aGlow");
     const text = document.getElementById("aText");
 
-    loader.style.transition = "opacity 0.2s ease-out, transform 2.8s cubic-bezier(0.2, 0.8, 0.2, 1)";
-    setTimeout(() => { loader.style.opacity = "1"; loader.style.transform = "scale(1) rotate(540deg)"; }, 50);
+    if(!isTxtOpen) icon.querySelector('svg').style.fill = "var(--error-red)";
 
     setTimeout(() => {
-      loader.style.transition = "transform 0.5s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.4s ease-in";
-      loader.style.transform = "scale(0.01) rotate(650deg)";
-      loader.style.opacity = "0";
-    }, 2600);
-
-    setTimeout(() => {
-      flash.style.opacity = "1"; flash.style.transition = "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease-out";
-      setTimeout(() => { flash.style.transform = "scale(6)"; flash.style.opacity = "0"; }, 50);
-
-      shock.style.opacity = "1"; shock.style.transition = "transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease-out";
-      setTimeout(() => { shock.style.transform = "scale(5)"; shock.style.opacity = "0"; }, 50);
-
-      icon.style.transition = "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease-out";
+      icon.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out";
       icon.style.opacity = "1"; icon.style.transform = "scale(1)";
       
-      glow.style.transition = "opacity 1s ease"; glow.style.opacity = "0.8"; glow.style.transform = "scale(1)";
-      glow.style.animation = "pulseAmbientAnim 4s infinite ease-in-out 0.5s";
-
       setTimeout(() => {
-        text.style.transition = "transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease";
+        text.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease";
         text.style.opacity = "1"; text.style.transform = "translateY(0)";
-      }, 150);
+      }, 100);
 
-      if(callback) setTimeout(callback, 3000);
-    }, 3000);
+      if(callback) setTimeout(callback, 1800); // Kürzere Dauer
+    }, 50);
   }
 
   function showWelcomeScreen() {
@@ -618,8 +401,8 @@
     showHeader();
     wrap.innerHTML = `
       <div class="glass">
-        <h2 class="font-cursive screen-title" style="font-size:38px;">Wahl-Zugang</h2>
-        <p class="screen-subtitle">Bitte gib deinen 5-stelligen Code ein.</p>
+        <h2 class="font-cursive screen-title">Wahl-Zugang</h2>
+        <p class="screen-subtitle">Bitte gib deinen Code ein.</p>
         <div class="code-container" id="codeInputs">
           <input type="text" maxlength="1" class="code-input" autofocus>
           <input type="text" maxlength="1" class="code-input">
@@ -627,8 +410,8 @@
           <input type="text" maxlength="1" class="code-input">
           <input type="text" maxlength="1" class="code-input">
         </div>
-        <div id="codeError" style="color:var(--error-red); font-size:14px; font-weight:500; min-height:20px; margin-bottom:24px; text-align:center; text-shadow: 0 0 10px rgba(255,107,107,0.3);"></div>
-        <button class="btnPrimary" id="verifyBtn">Code verifizieren</button>
+        <div id="codeError" style="color:var(--error-red); font-size:13px; font-weight:400; min-height:20px; margin-bottom:24px; text-align:center;"></div>
+        <button class="btnPrimary" id="verifyBtn">Bestätigen</button>
       </div>`;
 
     const inputs = document.querySelectorAll('.code-input');
@@ -654,7 +437,7 @@
         
       if(!codeData || codeErr) {
         document.getElementById('codeError').textContent = "Dieser Code ist ungültig.";
-        btn.disabled = false; btn.textContent = "Code verifizieren";
+        btn.disabled = false; btn.textContent = "Bestätigen";
         return;
       }
 
@@ -662,8 +445,8 @@
         .select("id").eq("session_id", currentSession.id).eq("voter_code", code).maybeSingle();
 
       if(voteData) {
-        document.getElementById('codeError').textContent = "Mit diesem Code wurde bereits abgestimmt.";
-        btn.disabled = false; btn.textContent = "Code verifizieren";
+        document.getElementById('codeError').textContent = "Code wurde bereits verwendet.";
+        btn.disabled = false; btn.textContent = "Bestätigen";
         return;
       }
 
@@ -683,9 +466,9 @@
     if (allowDelegation) {
         delegationHtml = `
           <div class="delegationSection" id="delegationSection">
-            <div class="delegationTitle">🔄 Stimmübertragungen</div>
+            <div class="delegationTitle">Stimmübertragungen</div>
             <div class="delegationCountRow">
-              <label>Anzahl übertragener Stimmen:</label>
+              <label>Übertragene Stimmen:</label>
               <div class="countStepper">
                 <button class="stepBtn" id="stepMinus" type="button" disabled>−</button>
                 <span class="countDisplay" id="countDisplay">0</span>
@@ -707,12 +490,12 @@
 
     wrap.innerHTML = `
       <div class="glass">
-        <h2 class="font-cursive screen-title" style="font-size:40px;">${escapeHTML(currentSession.title)}</h2>
-        <p class="screen-subtitle" style="margin-bottom:28px;">Wähle eine Option und bestätige.</p>
+        <h2 class="font-cursive screen-title">${escapeHTML(currentSession.title)}</h2>
+        <p class="screen-subtitle" style="margin-bottom:24px;">Wähle eine Option aus.</p>
         <div id="optList">${optsHtml}</div>
         ${delegationHtml}
-        <button class="btnPrimary" id="submitVote" disabled style="margin-top:16px;">Stimme abgeben</button>
-        <div id="vMsg" style="margin-top:20px; font-size:14px; font-weight:500; color:var(--error-red); text-align:center;"></div>
+        <button class="btnPrimary" id="submitVote" disabled style="margin-top:16px;">Abstimmen</button>
+        <div id="vMsg" style="margin-top:16px; font-size:13px; color:var(--error-red); text-align:center;"></div>
       </div>`;
 
     const submitBtn = document.getElementById("submitVote");
@@ -721,8 +504,7 @@
     function updateSubmitLabel() {
       if (selected === null) return;
       const total = 1 + delegationCount;
-      const optText = opts[selected];
-      submitBtn.textContent = total > 1 ? `„${optText}“ wählen (${total} Stimmen)` : `„${optText}“ wählen`;
+      submitBtn.textContent = total > 1 ? `Abstimmen (${total} Stimmen)` : `Abstimmen`;
     }
 
     function updateDelegationNames() {
@@ -735,7 +517,7 @@
           const inp = document.createElement("input"); 
           inp.type = "text"; 
           inp.className = "delegationNameInput";
-          inp.placeholder = `Name der ${i + 1}. übertragenden Person`; 
+          inp.placeholder = `Name Person ${i + 1}`; 
           inp.maxLength = 80; 
           container.appendChild(inp);
         }
@@ -775,7 +557,7 @@
         delegationNames = names;
       }
 
-      submitBtn.disabled = true; submitBtn.textContent = "Wird gespeichert...";
+      submitBtn.disabled = true; submitBtn.textContent = "Speichere...";
 
       const vToken = getVoterToken(currentSession.id);
       const weight = 1 + delegationCount;
@@ -794,7 +576,7 @@
           sessionStorage.setItem("voted_" + currentSession.id, "1");
           showBlockedState();
         } else {
-          vMsg.textContent = "Fehler bei der Abgabe: " + error.message;
+          vMsg.textContent = "Fehler: " + error.message;
           submitBtn.disabled = false; updateSubmitLabel();
         }
         return;
@@ -804,14 +586,13 @@
       showHeader();
       wrap.innerHTML = `
         <div class="glass" style="text-align:center;">
-          <div class="success-icon" style="filter: drop-shadow(0 0 30px var(--accent-glow));">✨</div>
           <h2 class="font-cursive screen-title">Stimme erfasst</h2>
-          <p class="screen-subtitle" style="margin-bottom:0;">Danke für deine Teilnahme.</p>
+          <p class="screen-subtitle" style="margin-bottom:0;">Vielen Dank.</p>
         </div>`;
     });
   }
 
-  // --- HAUPT-LOGIK ---
+  // --- START ---
   (async () => {
     try {
         const { data, error } = await sb.from("vote_sessions")
@@ -827,9 +608,8 @@
             showHeader();
             wrap.innerHTML = `
               <div class="glass" style="text-align:center;">
-                <div class="success-icon" style="filter: drop-shadow(0 0 20px rgba(255,255,255,0.15));">⏳</div>
                 <h2 class="font-cursive screen-title">Keine aktive Wahl</h2>
-                <p class="screen-subtitle">Derzeit läuft keine Abstimmung.<br>Bitte warte, bis der Wahlgang eröffnet wird.</p>
+                <p class="screen-subtitle">Bitte warte auf die Eröffnung.</p>
               </div>`;
             return;
         }
@@ -867,8 +647,7 @@
         showHeader();
         wrap.innerHTML = `
           <div class="glass" style="text-align:center;">
-            <div class="success-icon" style="color:var(--error-red); filter: drop-shadow(0 0 20px rgba(255,107,107,0.4));">⚠️</div>
-            <h3 class="font-cursive screen-title" style="font-size:36px; color:var(--text-main); background:none; text-shadow: 0 0 20px rgba(255,107,107,0.5);">Fehler beim Laden</h3>
+            <h3 class="font-cursive screen-title" style="color:var(--text-main);">Fehler</h3>
             <p class="screen-subtitle" style="color:var(--error-red);">${err.message}</p>
           </div>`;
     }
