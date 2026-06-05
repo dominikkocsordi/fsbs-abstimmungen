@@ -306,72 +306,66 @@
       pointer-events: none;
     }
 
-    /* Wide blurred glow ring */
-    .emblem-ring-glow {
-      position: absolute; inset: -10px;
-      border-radius: 50%;
-      background: conic-gradient(from -90deg,
-        rgba(77,168,255,0.55) 0%,
-        rgba(255,255,255,0.12) 18%,
-        rgba(255,179,71,0.55) 46%,
-        rgba(255,255,255,0.12) 78%,
-        rgba(77,168,255,0.55) 100%
-      );
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 26px), #000 calc(100% - 26px));
-      mask: radial-gradient(farthest-side, transparent calc(100% - 26px), #000 calc(100% - 26px));
-      filter: blur(10px);
+    /*
+     * 5 Ring-Layer analog zu Swift's tubeRing Group:
+     * Proportionen skaliert von Swift (460px Ring) → 148px: Faktor ≈ 0.32
+     * L1: lineWidth 54→17, blur 60→19, opacity 0.85
+     * L2: lineWidth 34→11, blur 24→8,  opacity 0.96
+     * L3: lineWidth 18→6,  blur 7→2
+     * L4: lineWidth 10→3,  blur 2→0.6
+     * L5: highlightGradient (weiß), lineWidth 2.6→1, blur 0.5→0.2, + shadows
+     */
+    .emblem-ring-l1 {
+      position: absolute; inset: -10px; border-radius: 50%;
+      background: conic-gradient(from -90deg, #4DA8FF 0%, #ffffff 18%, #FFB347 46%, #ffffff 78%, #4DA8FF 100%);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 22px), #000 calc(100% - 22px));
+      mask:         radial-gradient(farthest-side, transparent calc(100% - 22px), #000 calc(100% - 22px));
+      filter: blur(19px); opacity: 0.85;
       animation: emblemRotate 28s linear infinite;
     }
-
-    /* Main visible ring */
-    .emblem-ring-main {
-      position: absolute; inset: 0;
-      border-radius: 50%;
-      background: conic-gradient(from -90deg,
-        #4DA8FF 0%,
-        #ffffff 18%,
-        #FFB347 46%,
-        #ffffff 78%,
-        #4DA8FF 100%
-      );
+    .emblem-ring-l2 {
+      position: absolute; inset: -2px; border-radius: 50%;
+      background: conic-gradient(from -90deg, #4DA8FF 0%, #ffffff 18%, #FFB347 46%, #ffffff 78%, #4DA8FF 100%);
       -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 13px), #000 calc(100% - 13px));
-      mask: radial-gradient(farthest-side, transparent calc(100% - 13px), #000 calc(100% - 13px));
+      mask:         radial-gradient(farthest-side, transparent calc(100% - 13px), #000 calc(100% - 13px));
+      filter: blur(8px); opacity: 0.96;
+      animation: emblemRotate 28s linear infinite;
+    }
+    .emblem-ring-l3 {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: conic-gradient(from -90deg, #4DA8FF 0%, #ffffff 18%, #FFB347 46%, #ffffff 78%, #4DA8FF 100%);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 7px));
+      mask:         radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 7px));
+      filter: blur(2px);
+      animation: emblemRotate 28s linear infinite;
+    }
+    .emblem-ring-l4 {
+      position: absolute; inset: 2px; border-radius: 50%;
+      background: conic-gradient(from -90deg, #4DA8FF 0%, #ffffff 18%, #FFB347 46%, #ffffff 78%, #4DA8FF 100%);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+      mask:         radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
       filter: blur(0.6px);
       animation: emblemRotate 28s linear infinite;
     }
-
-    /* Thin bright highlight ring (inner edge) */
-    .emblem-ring-sharp {
-      position: absolute; inset: 5px;
-      border-radius: 50%;
+    /* L5: highlightGradient (weiß, wie Swift) + Schatten in Blau & Amber */
+    .emblem-ring-l5 {
+      position: absolute; inset: 3px; border-radius: 50%;
       background: conic-gradient(from -90deg,
-        rgba(77,168,255,0.85) 0%,
-        rgba(255,255,255,0.95) 18%,
-        rgba(255,179,71,0.85) 46%,
-        rgba(255,255,255,0.95) 78%,
-        rgba(77,168,255,0.85) 100%
-      );
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
-      mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+        rgba(255,255,255,0.95) 0%, rgba(255,255,255,1) 18%,
+        rgba(255,255,255,0.80) 50%,
+        rgba(255,255,255,1) 82%, rgba(255,255,255,0.95) 100%);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+      mask:         radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+      filter: blur(0.2px) drop-shadow(0 0 6px rgba(77,168,255,0.8)) drop-shadow(0 0 4px rgba(255,179,71,0.7));
       animation: emblemRotate 28s linear infinite;
     }
 
-    /* Heart + number center */
+    /* Herz-Zentrum */
     .emblem-heart-center {
       position: relative; z-index: 2;
       width: 82px; height: 82px;
-      display: flex; align-items: center; justify-content: center;
     }
-    .emblem-heart-center svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-    .emblem-number {
-      position: relative; z-index: 3;
-      font-size: 22px; font-weight: 900; letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #4DA8FF 0%, #FFB347 55%, #FFD67F 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-top: 4px;
-      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));
-    }
+    .emblem-heart-center svg { width: 100%; height: 100%; }
 
     @keyframes emblemRotate { to { transform: rotate(360deg); } }
     @keyframes emblemPulse {
@@ -392,48 +386,58 @@
   <div id="pageHeader" class="page-emblem">
     <div class="emblem-ring-wrap">
       <div class="emblem-ambient"></div>
-      <div class="emblem-ring-glow"></div>
-      <div class="emblem-ring-main"></div>
-      <div class="emblem-ring-sharp"></div>
+      <div class="emblem-ring-l1"></div>
+      <div class="emblem-ring-l2"></div>
+      <div class="emblem-ring-l3"></div>
+      <div class="emblem-ring-l4"></div>
+      <div class="emblem-ring-l5"></div>
       <div class="emblem-heart-center">
         <svg viewBox="0 0 100 88" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <!-- index % 2 == 0: accentBlue → accentAmber -->
             <linearGradient id="hgBA" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#4DA8FF"/>
               <stop offset="100%" stop-color="#FFB347"/>
             </linearGradient>
-            <!-- index % 2 == 1: accentAmber → accentGold -->
             <linearGradient id="hgAG" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#FFB347"/>
+              <stop offset="100%" stop-color="#FFD67F"/>
+            </linearGradient>
+            <!-- Gradient für "25"-Text: blau→amber→gold wie Swift -->
+            <linearGradient id="hgTxt" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#4DA8FF"/>
+              <stop offset="50%"  stop-color="#FFB347"/>
               <stop offset="100%" stop-color="#FFD67F"/>
             </linearGradient>
             <filter id="hShadow" x="-25%" y="-25%" width="150%" height="150%">
               <feDropShadow dx="-3" dy="6" stdDeviation="4" flood-color="rgba(0,0,0,0.60)"/>
             </filter>
+            <filter id="txtShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="-2" dy="3" stdDeviation="2" flood-color="rgba(0,0,0,0.70)"/>
+            </filter>
           </defs>
-          <!-- 5 Herzen wie in Swift: scaleEffect(1.0 - index * 0.13), Zentrum ca. (50, 42) -->
-          <!-- index 0: scale 1.00, blau→amber -->
+          <!-- 5 Herzen: scaleEffect(1.0 - index * 0.13), Zentrum (50, 42) -->
           <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
                 fill="url(#hgBA)" filter="url(#hShadow)"/>
-          <!-- index 1: scale 0.87, amber→gold -->
           <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
                 fill="url(#hgAG)" filter="url(#hShadow)"
                 transform="translate(50,42) scale(0.87) translate(-50,-42)"/>
-          <!-- index 2: scale 0.74, blau→amber -->
           <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
                 fill="url(#hgBA)" filter="url(#hShadow)"
                 transform="translate(50,42) scale(0.74) translate(-50,-42)"/>
-          <!-- index 3: scale 0.61, amber→gold -->
           <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
                 fill="url(#hgAG)" filter="url(#hShadow)"
                 transform="translate(50,42) scale(0.61) translate(-50,-42)"/>
-          <!-- index 4: scale 0.48, blau→amber -->
           <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
                 fill="url(#hgBA)" filter="url(#hShadow)"
                 transform="translate(50,42) scale(0.48) translate(-50,-42)"/>
+          <!-- "25" zentriert im innersten Herz (scale 0.48, optisches Zentrum ~y=40) -->
+          <!-- fontSize ≈ size*0.193 in Swift, hier in SVG-Einheiten: ~14 bei viewBox 100 -->
+          <text x="50" y="44"
+                text-anchor="middle" dominant-baseline="central"
+                font-size="14" font-weight="900" font-family="system-ui,-apple-system,sans-serif"
+                letter-spacing="-0.5"
+                fill="url(#hgTxt)" filter="url(#txtShadow)">25</text>
         </svg>
-        <span class="emblem-number">25</span>
       </div>
     </div>
   </div>
