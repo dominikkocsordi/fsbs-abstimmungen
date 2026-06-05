@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
   <title>Abstimmung · FSBS</title>
-  <meta content="#050302" name="theme-color"/>
+  <meta content="#07111F" name="theme-color"/>
   
   <!-- Moderne serifenlose Schrift für das UI (Kontrast zur Cursive) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,24 +25,25 @@
     }
 
     :root {
-      /* Elegante Sandbraun/Bronze Palette (Inspiriert vom ESC-Theme) */
-      --bg-base: #050302; 
-      --bg-surface: #140C07; 
-      --bg-highlight: #1F140D;
-      
-      --accent-sand-light: #E6C8A6;
-      --accent-sand: #D4A373; 
-      --accent-sand-deep: #8B5A33;
-      --accent-sand-glow: rgba(212, 163, 115, 0.25);
-      
-      --text-main: #FFFFFF;
-      --text-muted: #BBAAA0;
-      
-      --glass-bg: rgba(15, 10, 6, 0.5);
-      --glass-border: rgba(212, 163, 115, 0.15);
-      --glass-border-top: rgba(255, 255, 255, 0.15);
-      
-      --error-red: #C84B31;
+      /* Deep Navy / Blau Palette */
+      --bg-base: #07111F;
+      --bg-surface: #0D1D33;
+      --bg-highlight: #102844;
+
+      --accent-blue: #4DA8FF;
+      --accent-amber: #FFB347;
+      --accent-gold: #FFD67F;
+      --accent-glow: rgba(77, 168, 255, 0.22);
+      --accent-amber-glow: rgba(255, 179, 71, 0.22);
+
+      --text-main: rgba(255, 255, 255, 0.92);
+      --text-muted: rgba(255, 255, 255, 0.62);
+
+      --glass-bg: rgba(13, 29, 51, 0.55);
+      --glass-border: rgba(77, 168, 255, 0.18);
+      --glass-border-top: rgba(255, 255, 255, 0.14);
+
+      --error-red: #FF5A5A;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,15 +65,15 @@
     }
     
     /* Background & Ambient Animations (Sandbraune Lichtstrahlen) */
-    .bg-gradient { 
-      position: fixed; inset: 0; z-index: -2; 
+    .bg-gradient {
+      position: fixed; inset: 0; z-index: -2;
       background: radial-gradient(circle at 50% -20%, var(--bg-highlight) 0%, var(--bg-surface) 50%, var(--bg-base) 100%);
     }
-    
+
     .radial-glow {
       position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%);
       width: 140vw; height: 140vw; border-radius: 50%; z-index: -1;
-      background: radial-gradient(circle, var(--glow-color, rgba(212, 163, 115, 0.08)) 0%, transparent 60%);
+      background: radial-gradient(circle, var(--glow-color, rgba(77, 168, 255, 0.07)) 0%, transparent 60%);
       transition: background 1.5s ease;
       pointer-events: none;
       animation: pulseLight 10s infinite alternate ease-in-out;
@@ -90,17 +91,17 @@
       min-height: 100vh; justify-content: center; 
     }
     
-    .glass { 
-      background: var(--glass-bg); 
-      border: 1px solid var(--glass-border); 
+    .glass {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
       border-top: 1px solid var(--glass-border-top);
-      border-radius: 32px; 
-      padding: 48px 36px; 
-      width: 100%; 
-      backdrop-filter: blur(30px); 
-      -webkit-backdrop-filter: blur(30px); 
-      box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 -10px 30px rgba(212, 163, 115, 0.05); 
-      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+      border-radius: 32px;
+      padding: 48px 36px;
+      width: 100%;
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 -10px 30px rgba(77, 168, 255, 0.04);
+      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       position: relative;
     }
 
@@ -111,7 +112,7 @@
       margin-bottom: 12px;
       text-align: center;
       line-height: 1.1;
-      text-shadow: 0 0 30px var(--accent-sand-glow), 0 2px 4px rgba(0,0,0,0.5);
+      text-shadow: 0 0 30px var(--accent-glow), 0 2px 4px rgba(0,0,0,0.5);
     }
     
     .screen-subtitle {
@@ -127,125 +128,124 @@
       font-size: 56px;
       margin-bottom: 20px;
       text-align: center;
-      filter: drop-shadow(0 0 24px var(--accent-sand-glow));
+      filter: drop-shadow(0 0 24px var(--accent-glow));
     }
 
     /* Neu designte Code Inputs */
     .code-container { display: flex; gap: 14px; justify-content: center; margin: 0 0 40px; }
-    .code-input { 
-      width: 60px; height: 75px; 
-      font-size: 34px; text-align: center; 
-      font-family: 'Neulis Cursive', cursive; /* Setzt die fette Schreibschrift für die Code-Zahlen */
+    .code-input {
+      width: 60px; height: 75px;
+      font-size: 34px; text-align: center;
+      font-family: 'Neulis Cursive', cursive;
       font-weight: bold;
-      background: rgba(10, 5, 2, 0.7); 
-      border: 1px solid rgba(212, 163, 115, 0.25); 
-      border-bottom: 3px solid rgba(212, 163, 115, 0.5); /* Edle Bodenkante */
-      border-top-color: rgba(255, 255, 255, 0.08); /* Subtiler Glanz oben */
-      color: var(--accent-sand-light); 
-      border-radius: 16px; 
-      outline: none; 
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-      box-shadow: inset 0 4px 15px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.3);
+      background: rgba(7, 17, 31, 0.75);
+      border: 1px solid rgba(77, 168, 255, 0.22);
+      border-bottom: 3px solid rgba(77, 168, 255, 0.5);
+      border-top-color: rgba(255, 255, 255, 0.10);
+      color: var(--accent-gold);
+      border-radius: 16px;
+      outline: none;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: inset 0 4px 15px rgba(0,0,0,0.6), 0 4px 10px rgba(0,0,0,0.3);
       text-transform: uppercase;
-      caret-color: var(--accent-sand); /* Sandbrauner Cursor */
+      caret-color: var(--accent-blue);
     }
-    .code-input:focus { 
-      border-color: var(--accent-sand); 
-      border-bottom-color: var(--accent-sand-light);
-      background: rgba(212, 163, 115, 0.06); 
-      transform: translateY(-6px) scale(1.05); /* Hebt sich weich ab */
-      color: #FFF; /* Hellerer Text im Fokus */
-      text-shadow: 0 0 15px var(--accent-sand-glow);
-      box-shadow: 0 15px 35px var(--accent-sand-glow), inset 0 2px 5px rgba(0,0,0,0.5); 
+    .code-input:focus {
+      border-color: var(--accent-blue);
+      border-bottom-color: var(--accent-gold);
+      background: rgba(77, 168, 255, 0.07);
+      transform: translateY(-6px) scale(1.05);
+      color: #FFF;
+      text-shadow: 0 0 15px var(--accent-glow);
+      box-shadow: 0 15px 35px var(--accent-glow), inset 0 2px 5px rgba(0,0,0,0.4);
     }
     .code-input:not(:placeholder-shown) {
-      border-color: rgba(212, 163, 115, 0.6);
-      box-shadow: 0 0 20px rgba(212, 163, 115, 0.15), inset 0 2px 5px rgba(0,0,0,0.5);
+      border-color: rgba(77, 168, 255, 0.55);
+      box-shadow: 0 0 20px rgba(77, 168, 255, 0.12), inset 0 2px 5px rgba(0,0,0,0.4);
     }
 
     /* Buttons */
-    .btnPrimary { 
-      width: 100%; padding: 20px; 
-      background: linear-gradient(135deg, var(--accent-sand-light), var(--accent-sand-deep)); 
-      color: #1A1008; font-weight: 800; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase;
-      border: none; border-radius: 18px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-      box-shadow: 0 10px 30px var(--accent-sand-glow); 
+    .btnPrimary {
+      width: 100%; padding: 20px;
+      background: linear-gradient(135deg, var(--accent-blue), #1A6BB5);
+      color: #fff; font-weight: 800; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase;
+      border: none; border-radius: 18px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px var(--accent-glow);
     }
     .btnPrimary:hover:not(:disabled) {
-      box-shadow: 0 15px 40px rgba(212, 163, 115, 0.4); transform: translateY(-2px);
-      background: linear-gradient(135deg, #F5DCC0, var(--accent-sand));
+      box-shadow: 0 15px 40px rgba(77, 168, 255, 0.38); transform: translateY(-2px);
+      background: linear-gradient(135deg, #7FC8FF, var(--accent-blue));
     }
     .btnPrimary:active:not(:disabled) { transform: scale(0.98); }
-    .btnPrimary:disabled { 
-      background: rgba(255, 255, 255, 0.03); color: rgba(255, 255, 255, 0.2); 
-      cursor: not-allowed; box-shadow: none; border: 1px solid rgba(255, 255, 255, 0.05);
+    .btnPrimary:disabled {
+      background: rgba(255, 255, 255, 0.04); color: rgba(255, 255, 255, 0.2);
+      cursor: not-allowed; box-shadow: none; border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     /* Voting Options */
-    .optBtn { 
-      width: 100%; padding: 20px 24px; background: rgba(0, 0, 0, 0.4); 
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; color: var(--text-main); 
-      font-size: 16px; font-weight: 400; text-align: left; cursor: pointer; 
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 18px; margin-bottom: 14px; 
+    .optBtn {
+      width: 100%; padding: 20px 24px; background: rgba(13, 29, 51, 0.5);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; color: var(--text-main);
+      font-size: 16px; font-weight: 400; text-align: left; cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 18px; margin-bottom: 14px;
     }
-    .optBtn:hover { background: rgba(212, 163, 115, 0.05); border-color: rgba(212, 163, 115, 0.3); }
-    .optBtn.selected { 
-      background: rgba(212, 163, 115, 0.08); border-color: var(--accent-sand); 
-      box-shadow: 0 10px 30px var(--accent-sand-glow); 
+    .optBtn:hover { background: rgba(77, 168, 255, 0.07); border-color: rgba(77, 168, 255, 0.3); }
+    .optBtn.selected {
+      background: rgba(77, 168, 255, 0.10); border-color: var(--accent-blue);
+      box-shadow: 0 10px 30px var(--accent-glow);
     }
-    
+
     .radio-circle {
-      width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); 
+      width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2);
       display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease;
     }
     .optBtn.selected .radio-circle {
-      border-color: var(--accent-sand);
-      box-shadow: 0 0 16px var(--accent-sand-glow);
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 16px var(--accent-glow);
     }
     .radio-inner {
-      width: 12px; height: 12px; background: var(--accent-sand-light); border-radius: 50%; 
+      width: 12px; height: 12px; background: var(--accent-gold); border-radius: 50%;
       transform: scale(0); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 0 10px var(--accent-sand-light);
+      box-shadow: 0 0 10px var(--accent-amber-glow);
     }
     .optBtn.selected .radio-inner { transform: scale(1); }
 
     /* Delegation UI */
-    .delegationSection { margin: 28px 0; padding: 24px; border-radius: 20px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255,255,255,0.05); }
-    .delegationTitle { font-size: 13px; font-weight: 600; color: var(--accent-sand); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
+    .delegationSection { margin: 28px 0; padding: 24px; border-radius: 20px; background: rgba(13, 29, 51, 0.4); border: 1px solid rgba(77, 168, 255, 0.10); }
+    .delegationTitle { font-size: 13px; font-weight: 600; color: var(--accent-amber); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
     .delegationCountRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
     .delegationCountRow label { font-size: 15px; color: var(--text-muted); }
-    .countStepper { display: flex; align-items: center; gap: 14px; background: rgba(0,0,0,0.6); padding: 6px; border-radius: 14px; border: 1px solid rgba(212, 163, 115, 0.15); }
-    .stepBtn { width: 36px; height: 36px; border-radius: 10px; background: transparent; border: none; color: var(--accent-sand-light); font-size: 22px; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
-    .stepBtn:hover:not(:disabled) { background: rgba(212, 163, 115, 0.15); }
+    .countStepper { display: flex; align-items: center; gap: 14px; background: rgba(7, 17, 31, 0.6); padding: 6px; border-radius: 14px; border: 1px solid rgba(77, 168, 255, 0.15); }
+    .stepBtn { width: 36px; height: 36px; border-radius: 10px; background: transparent; border: none; color: var(--accent-gold); font-size: 22px; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
+    .stepBtn:hover:not(:disabled) { background: rgba(77, 168, 255, 0.15); }
     .stepBtn:disabled { opacity: 0.2; cursor: not-allowed; color: white; }
     .countDisplay { min-width: 28px; text-align: center; font-size: 18px; font-weight: 600; color: var(--text-main); }
     
     .delegationNames { display: flex; flex-direction: column; gap: 16px; }
     
-    /* Neu designte Delegation Inputs */
-    .delegationNameInput { 
-      background: rgba(10, 5, 2, 0.6); 
-      border: 1px solid rgba(212, 163, 115, 0.2); 
-      border-bottom: 2px solid rgba(212, 163, 115, 0.4);
-      color: var(--text-main); 
-      padding: 18px 20px; 
-      border-radius: 16px; 
-      outline: none; 
-      font-size: 16px; 
+    .delegationNameInput {
+      background: rgba(7, 17, 31, 0.65);
+      border: 1px solid rgba(77, 168, 255, 0.20);
+      border-bottom: 2px solid rgba(77, 168, 255, 0.40);
+      color: var(--text-main);
+      padding: 18px 20px;
+      border-radius: 16px;
+      outline: none;
+      font-size: 16px;
       font-weight: 500;
-      width: 100%; 
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-      box-shadow: inset 0 4px 10px rgba(0,0,0,0.6);
-      caret-color: var(--accent-sand);
+      width: 100%;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.4);
+      caret-color: var(--accent-blue);
     }
     .delegationNameInput::placeholder {
-      color: rgba(187, 170, 160, 0.4);
+      color: rgba(255, 255, 255, 0.28);
     }
-    .delegationNameInput:focus { 
-      border-color: var(--accent-sand); 
-      border-bottom-color: var(--accent-sand-light);
-      background: rgba(212, 163, 115, 0.05); 
-      box-shadow: 0 8px 25px var(--accent-sand-glow), inset 0 2px 4px rgba(0,0,0,0.5);
+    .delegationNameInput:focus {
+      border-color: var(--accent-blue);
+      border-bottom-color: var(--accent-gold);
+      background: rgba(77, 168, 255, 0.06);
+      box-shadow: 0 8px 25px var(--accent-glow), inset 0 2px 4px rgba(0,0,0,0.4);
       transform: translateY(-2px);
     }
 
@@ -259,7 +259,7 @@
     .main-icon svg { width: 100%; height: 100%; }
 
     .anim-text { text-align: center; opacity: 0; transform: translateY(40px); }
-    .anim-title { font-size: 52px; color: var(--text-main); line-height: 1.1; margin-bottom: 8px; text-shadow: 0 0 30px var(--accent-sand-glow), 0 4px 12px rgba(0,0,0,0.8); }
+    .anim-title { font-size: 52px; color: var(--text-main); line-height: 1.1; margin-bottom: 8px; text-shadow: 0 0 30px var(--accent-glow), 0 4px 12px rgba(0,0,0,0.8); }
     .anim-sub { font-size: 15px; font-weight: 600; letter-spacing: 5px; color: var(--text-muted); text-transform: uppercase; }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(40px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -334,9 +334,8 @@
     const titleText = isTxtOpen ? 'Wahl eröffnet' : 'Wahl geschlossen';
     const subText = isTxtOpen ? 'STIMMABGABE FREIGEGEBEN' : 'KEINE WEITEREN STIMMEN';
     
-    // SVG Icons mit Sandbraun-Farbverlauf anstelle von einfachem Grün
-    const iconSand = `<svg viewBox="0 0 24 24" fill="url(#gradSand)"><defs><linearGradient id="gradSand" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFF"/><stop offset="100%" stop-color="var(--accent-sand)"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`;
-    const iconRed = `<svg viewBox="0 0 24 24" fill="url(#gradRed)"><defs><linearGradient id="gradRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFF"/><stop offset="100%" stop-color="var(--error-red)"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>`;
+    const iconSand = `<svg viewBox="0 0 24 24" fill="url(#gradBlue)"><defs><linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFF"/><stop offset="100%" stop-color="#4DA8FF"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`;
+    const iconRed = `<svg viewBox="0 0 24 24" fill="url(#gradRed)"><defs><linearGradient id="gradRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFF"/><stop offset="100%" stop-color="#FF5A5A"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>`;
     const iconSvg = isTxtOpen ? iconSand : iconRed;
 
     wrap.innerHTML = `
@@ -354,13 +353,13 @@
 
     const root = document.documentElement;
     if(type === 'open') {
-      root.style.setProperty('--anim-color-light', 'var(--accent-sand-light)');
-      root.style.setProperty('--anim-color-deep', 'var(--accent-sand-deep)');
-      document.getElementById("bgGlow").style.setProperty('--glow-color', 'rgba(212, 163, 115, 0.15)');
+      root.style.setProperty('--anim-color-light', '#4DA8FF');
+      root.style.setProperty('--anim-color-deep', '#1A6BB5');
+      document.getElementById("bgGlow").style.setProperty('--glow-color', 'rgba(77, 168, 255, 0.12)');
     } else {
       root.style.setProperty('--anim-color-light', '#FF8A8A');
-      root.style.setProperty('--anim-color-deep', 'var(--error-red)');
-      document.getElementById("bgGlow").style.setProperty('--glow-color', 'rgba(200, 75, 49, 0.15)');
+      root.style.setProperty('--anim-color-deep', '#FF5A5A');
+      document.getElementById("bgGlow").style.setProperty('--glow-color', 'rgba(255, 90, 90, 0.12)');
     }
 
     const loader = document.getElementById("aLoader");
@@ -606,7 +605,7 @@
       sessionStorage.setItem("voted_" + currentSession.id, "1");
       wrap.innerHTML = `
         <div class="glass" style="text-align:center;">
-          <div class="success-icon" style="filter: drop-shadow(0 0 30px var(--accent-sand-glow));">✨</div>
+          <div class="success-icon" style="filter: drop-shadow(0 0 30px var(--accent-glow));">✨</div>
           <h2 class="font-cursive screen-title">Stimme erfasst</h2>
           <p class="screen-subtitle" style="margin-bottom:0;">Danke für deine Teilnahme.</p>
         </div>`;
