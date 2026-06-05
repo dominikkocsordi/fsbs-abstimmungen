@@ -4,9 +4,8 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
   <title>Abstimmung · FSBS</title>
-  <meta content="#000000" name="theme-color"/>
+  <meta content="#030303" name="theme-color"/>
   
-  <!-- Moderne serifenlose Schrift für das UI (Kontrast zur Cursive) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
@@ -25,10 +24,10 @@
     }
 
     :root {
-      /* Angepasste Farben an das 3D-Herz (0655abc3-f506-4034-9323-277559fa43f0.jpg) */
-      --bg-base: #000000;
-      --bg-surface: #0a0808;
-      --bg-highlight: #141010;
+      /* Weicher, warmer Dark-Mode Hintergrund (Gold/Schwarz-Fokus) */
+      --bg-base: #030303;      /* Fast reines Schwarz für die Ränder/Unten */
+      --bg-surface: #0f0c0a;   /* Sehr dunkles Schwarz-Braun (greift das Roségold extrem subtil auf) */
+      --bg-highlight: #1c1511; /* Der "Spotlight"-Bereich oben */
 
       --accent-rosegold-light: #C49A84;
       --accent-rosegold-dark: #B78873;
@@ -77,7 +76,8 @@
     /* Background & Ambient Animations */
     .bg-gradient {
       position: fixed; inset: 0; z-index: -2;
-      background: radial-gradient(circle at 50% -10%, var(--bg-highlight) 0%, var(--bg-surface) 40%, var(--bg-base) 100%);
+      /* Radiales Spotlight von oben Mitte, passend zum transparenten Herz */
+      background: radial-gradient(ellipse at 50% 0%, var(--bg-highlight) 0%, var(--bg-surface) 45%, var(--bg-base) 100%);
     }
 
     .radial-glow {
@@ -430,7 +430,6 @@
 <div class="radial-glow" id="bgGlow"></div>
 
 <div class="page-outer">
-  <!-- Kopfzeilen-Emblem -->
   <div id="pageHeader" class="page-emblem">
     <div class="emblem-heart-wrap">
       <div class="emblem-glow-orb"></div>
