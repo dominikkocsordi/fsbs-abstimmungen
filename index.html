@@ -5,41 +5,71 @@
   <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
   <title>Abstimmung · FSBS</title>
   <meta content="#000000" name="theme-color"/>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <style>
-    :root {
-      /* Farbschema aus zweiter Quelle (Schwarz/Gold) */
-      --bg1: #000000; --bg2: #0a0a0a; --bg3: #111111;
-      --red-light: #ffffff; --red-deep: #cccccc;
-      --green-light: #FFD700; --green-deep: #DAA520;
-      --accent1: #FFD700; --accent2: #DAA520;
-      --text: rgba(255, 255, 255, 0.92);
-      --muted: rgba(255, 255, 255, 0.65);
-      --glass: rgba(255, 255, 255, 0.05);
-      --border: rgba(255, 255, 255, 0.12);
-      --glass-glow: inset 0 0 20px rgba(255, 215, 0, 0.05);
+    /* Lokale Cursive Font Einbindung */
+    @font-face {
+      font-family: 'Neulis Cursive';
+      src: url('./fonts/NeulisCursive.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
     }
+
+    :root {
+      /* Premium Dark Mode & Gold Accent Palette */
+      --bg-base: #000000; 
+      --bg-surface: #0a0a0a; 
+      --bg-highlight: #111111;
+      
+      --accent-gold: #FFD700; 
+      --accent-gold-deep: #DAA520;
+      --accent-gold-glow: rgba(255, 215, 0, 0.2);
+      
+      --text-main: rgba(255, 255, 255, 0.95);
+      --text-muted: rgba(255, 255, 255, 0.60);
+      
+      --glass-bg: rgba(15, 15, 15, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-top: rgba(255, 255, 255, 0.15); /* Subtiles Glanzlicht */
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     html, body { 
-        min-height: 100%; 
-        font-family: system-ui, -apple-system, sans-serif; 
-        background: var(--bg1); 
-        color: var(--text); 
-        overflow-x: hidden; 
+      min-height: 100%; 
+      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+      background: var(--bg-base); 
+      color: var(--text-main); 
+      overflow-x: hidden; 
+      -webkit-font-smoothing: antialiased;
     }
     
+    /* Typografie-Klassen */
+    .font-cursive { 
+      font-family: 'Neulis Cursive', cursive; 
+      font-weight: normal; 
+    }
+    
+    /* Background & Ambient Animations */
     .bg-gradient { 
       position: fixed; inset: 0; z-index: -2; 
-      background: radial-gradient(circle at 50% 0%, var(--bg3) 0%, var(--bg2) 40%, var(--bg1) 100%);
-      animation: ambientMesh 20s ease-in-out infinite alternate;
+      background: radial-gradient(circle at 50% 0%, var(--bg-highlight) 0%, var(--bg-surface) 40%, var(--bg-base) 100%);
+      animation: ambientMesh 25s ease-in-out infinite alternate;
     }
     
     .radial-glow {
       position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: 1000px; height: 1000px; border-radius: 50%; z-index: -1;
+      width: 1200px; height: 1200px; border-radius: 50%; z-index: -1;
       background: radial-gradient(circle, var(--glow-color, transparent) 0%, transparent 60%);
-      opacity: 0.15; transition: background 1.5s ease;
+      opacity: 0.12; transition: background 1.5s ease;
       pointer-events: none;
     }
 
@@ -48,118 +78,164 @@
       100% { background-position: 100% 100%; }
     }
 
+    /* Layout & Glass Card */
     .wrap { 
-        width: 100%; max-width: 520px; margin: 0 auto; padding: 40px 16px 60px; 
-        display: flex; flex-direction: column; align-items: center; 
-        min-height: 100vh; justify-content: center; 
+      width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 20px 60px; 
+      display: flex; flex-direction: column; align-items: center; 
+      min-height: 100vh; justify-content: center; 
     }
     
     .glass { 
-      background: var(--glass); 
-      border: 1px solid var(--border); 
-      border-radius: 22px; 
-      padding: 30px 24px; 
+      background: var(--glass-bg); 
+      border: 1px solid var(--glass-border); 
+      border-top: 1px solid var(--glass-border-top);
+      border-radius: 28px; 
+      padding: 40px 32px; 
       width: 100%; 
-      backdrop-filter: blur(20px); 
-      -webkit-backdrop-filter: blur(20px); 
-      box-shadow: 0 20px 55px rgba(0,0,0,0.50), var(--glass-glow); 
+      backdrop-filter: blur(24px); 
+      -webkit-backdrop-filter: blur(24px); 
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.02); 
       animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
       position: relative;
-      overflow: hidden;
-    }
-    
-    .glass::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     }
 
-    .code-container { display: flex; gap: 10px; justify-content: center; margin: 20px 0 24px; }
+    /* Standardisierte UI Elemente (für saubereres JS) */
+    .screen-title {
+      font-size: 42px;
+      color: var(--accent-gold);
+      margin-bottom: 8px;
+      text-align: center;
+      line-height: 1.1;
+      text-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
+    }
+    
+    .screen-subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 32px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .success-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+      text-align: center;
+      filter: drop-shadow(0 0 24px var(--accent-gold-glow));
+    }
+
+    /* Code Inputs */
+    .code-container { display: flex; gap: 12px; justify-content: center; margin: 0 0 32px; }
     .code-input { 
-      width: 50px; height: 60px; font-size: 24px; font-weight: 800; text-align: center; 
-      background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.2); 
-      color: white; border-radius: 12px; outline: none; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+      width: 52px; height: 64px; font-size: 26px; font-weight: 800; text-align: center; 
+      background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.15); 
+      color: white; border-radius: 14px; outline: none; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
     }
     .code-input:focus { 
-      border-color: var(--accent1); background: rgba(255, 255, 255, 0.12); 
-      transform: translateY(-4px); box-shadow: 0 8px 16px rgba(255, 215, 0, 0.15), inset 0 2px 4px rgba(0,0,0,0.3); 
+      border-color: var(--accent-gold); background: rgba(255, 255, 255, 0.05); 
+      transform: translateY(-4px); 
+      box-shadow: 0 8px 20px var(--accent-gold-glow), inset 0 2px 4px rgba(0,0,0,0.5); 
     }
 
+    /* Buttons */
     .btnPrimary { 
-      width: 100%; padding: 16px; 
-      background: linear-gradient(135deg, var(--accent1), var(--accent2)); 
-      color: #000; font-weight: 800; font-size: 16px; letter-spacing: 0.5px;
-      border: none; border-radius: 16px; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); 
-      margin-top: 20px; box-shadow: 0 8px 24px rgba(255, 215, 0, 0.2); 
+      width: 100%; padding: 18px; 
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-deep)); 
+      color: #000; font-weight: 800; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase;
+      border: none; border-radius: 16px; cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
+      box-shadow: 0 8px 24px var(--accent-gold-glow); 
     }
-    .btnPrimary:hover {
+    .btnPrimary:hover:not(:disabled) {
       box-shadow: 0 12px 32px rgba(255, 215, 0, 0.3); transform: translateY(-2px);
     }
-    .btnPrimary:active { transform: scale(0.97); }
-    .btnPrimary:disabled { background: rgba(255, 255, 255, 0.1); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
+    .btnPrimary:active:not(:disabled) { transform: scale(0.98); }
+    .btnPrimary:disabled { 
+      background: rgba(255, 255, 255, 0.05); color: var(--text-muted); 
+      cursor: not-allowed; box-shadow: none; border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
+    /* Voting Options */
     .optBtn { 
-      width: 100%; padding: 16px 20px; background: rgba(255, 255, 255, 0.05); 
-      border: 1.5px solid var(--border); border-radius: 16px; color: white; 
-      font-size: 16px; font-weight: 600; text-align: left; cursor: pointer; 
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 16px; margin-bottom: 10px; 
+      width: 100%; padding: 18px 20px; background: rgba(0, 0, 0, 0.3); 
+      border: 1px solid var(--glass-border); border-radius: 16px; color: var(--text-main); 
+      font-size: 16px; font-weight: 500; text-align: left; cursor: pointer; 
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 16px; margin-bottom: 12px; 
     }
-    .optBtn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
+    .optBtn:hover { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.2); }
     .optBtn.selected { 
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(218, 165, 32, 0.15)); border-color: var(--accent1); 
-      box-shadow: 0 8px 24px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(255, 215, 0, 0.05); 
+      background: rgba(255, 215, 0, 0.05); border-color: var(--accent-gold); 
+      box-shadow: 0 8px 24px var(--accent-gold-glow); 
     }
+    
+    .radio-circle {
+      width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); 
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease;
+    }
+    .optBtn.selected .radio-circle {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 12px var(--accent-gold-glow);
+    }
+    .radio-inner {
+      width: 12px; height: 12px; background: var(--accent-gold); border-radius: 50%; 
+      transform: scale(0); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .optBtn.selected .radio-inner { transform: scale(1); }
 
-    .delegationSection { margin-top: 20px; padding: 18px; border-radius: 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); }
-    .delegationTitle { font-size: 15px; font-weight: 700; color: white; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    .delegationCountRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-    .delegationCountRow label { font-size: 14px; color: var(--muted); font-weight: 500; }
-    .countStepper { display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.05); padding: 4px; border-radius: 14px; border: 1px solid var(--border); }
-    .stepBtn { width: 34px; height: 34px; border-radius: 10px; background: transparent; border: none; color: white; font-size: 20px; font-weight: 500; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
+    /* Delegation UI */
+    .delegationSection { margin: 24px 0; padding: 20px; border-radius: 16px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255,255,255,0.05); }
+    .delegationTitle { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .delegationCountRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .delegationCountRow label { font-size: 14px; color: var(--text-muted); }
+    .countStepper { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+    .stepBtn { width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: white; font-size: 20px; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
     .stepBtn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); }
     .stepBtn:disabled { opacity: 0.2; cursor: not-allowed; }
-    .countDisplay { min-width: 24px; text-align: center; font-size: 18px; font-weight: 800; }
+    .countDisplay { min-width: 24px; text-align: center; font-size: 16px; font-weight: 600; }
     
-    .delegationNames { display: flex; flex-direction: column; gap: 10px; }
+    .delegationNames { display: flex; flex-direction: column; gap: 12px; }
     .delegationNameInput { 
-      background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border); color: white; 
-      padding: 12px 16px; border-radius: 12px; outline: none; font-size: 14px; width: 100%; 
-      transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+      background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); color: white; 
+      padding: 14px 16px; border-radius: 12px; outline: none; font-size: 15px; width: 100%; 
+      transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
     }
-    .delegationNameInput:focus { border-color: var(--accent1); background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 1px var(--accent1), inset 0 2px 4px rgba(0,0,0,0.2); }
-    
+    .delegationNameInput:focus { border-color: var(--accent-gold); background: rgba(255, 255, 255, 0.05); }
+
+    /* Theatrical Animations */
     .anim-container { position: relative; width: 340px; height: 340px; display: flex; justify-content: center; align-items: center; margin: 0 auto 40px; display: none; }
-    .loader-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 6px solid transparent; border-top-color: var(--anim-color-light); border-right-color: var(--anim-color-deep); opacity: 0; transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 10px var(--anim-color-light)); }
-    
+    .loader-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 4px solid transparent; border-top-color: var(--anim-color-light); border-right-color: var(--anim-color-deep); opacity: 0; transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 10px var(--anim-color-light)); }
     .ambient-glow { position: absolute; width: 440px; height: 440px; border-radius: 50%; background: radial-gradient(circle, var(--anim-color-deep) 0%, transparent 60%); opacity: 0; transform: scale(0.5); pointer-events: none; mix-blend-mode: screen; }
     .white-flash { position: absolute; width: 200px; height: 200px; border-radius: 50%; background: white; opacity: 0; transform: scale(0.2); filter: blur(4px); }
-    .shockwave { position: absolute; width: 200px; height: 200px; border-radius: 50%; border: 2px solid var(--anim-color-light); opacity: 0; transform: scale(0.5); box-shadow: 0 0 20px var(--anim-color-light), inset 0 0 20px var(--anim-color-light); }
-    .main-icon { position: absolute; width: 140px; height: 140px; opacity: 0; transform: scale(0); filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)) drop-shadow(0 0 30px var(--anim-color-deep)); }
+    .shockwave { position: absolute; width: 200px; height: 200px; border-radius: 50%; border: 1px solid var(--anim-color-light); opacity: 0; transform: scale(0.5); box-shadow: 0 0 30px var(--anim-color-light), inset 0 0 30px var(--anim-color-light); }
+    .main-icon { position: absolute; width: 140px; height: 140px; opacity: 0; transform: scale(0); filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8)) drop-shadow(0 0 30px var(--anim-color-deep)); }
     .main-icon svg { width: 100%; height: 100%; }
 
     .anim-text { text-align: center; opacity: 0; transform: translateY(40px); }
-    .anim-title { font-size: 40px; font-weight: 900; color: white; line-height: 1.1; margin-bottom: 8px; text-shadow: 0 4px 12px rgba(0,0,0,0.5); letter-spacing: -0.5px; }
-    .anim-sub { font-size: 15px; font-weight: 700; letter-spacing: 5px; color: var(--muted); text-transform: uppercase; }
+    .anim-title { font-size: 48px; color: white; line-height: 1.1; margin-bottom: 8px; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+    .anim-sub { font-size: 14px; font-weight: 600; letter-spacing: 4px; color: var(--text-muted); text-transform: uppercase; }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    @keyframes pulseAmbient { 0% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.15); opacity: 0.6; } 100% { transform: scale(1); opacity: 0.4; } }
+    @keyframes pulseAmbient { 0% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.5; } 100% { transform: scale(1); opacity: 0.3; } }
   </style>
 </head>
 <body>
 <div class="bg-gradient"></div>
 <div class="radial-glow" id="bgGlow"></div>
 <div class="wrap" id="mainWrap">
-<div id="loadingState" style="text-align:center; color: var(--muted);">Lade System...</div>
+  <div id="loadingState" style="text-align:center; color: var(--text-muted); font-weight: 500;">Lade System...</div>
 </div>
+
 <script>
   window.onerror = function(msg, url, lineNo, columnNo, error) {
     var wrap = document.getElementById("mainWrap");
     if(wrap) {
-      wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
-        '<div style="font-size:48px; margin-bottom:16px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));">⚠️</div>' +
-        '<h2 style="font-size:24px; font-weight:800; color:var(--red-light); margin-bottom:12px;">System-Fehler</h2>' +
-        '<p style="color:var(--muted); font-size:14px;">' + msg + '</p>' +
-        '<p style="color:rgba(255,255,255,0.3); font-size:12px; margin-top:12px;">Zeile: ' + lineNo + '</p></div>';
+      wrap.innerHTML = `
+        <div class="glass" style="text-align:center;">
+          <div class="success-icon" style="color: #ff4444; filter: drop-shadow(0 0 20px rgba(255,68,68,0.4));">⚠️</div>
+          <h2 class="font-cursive screen-title" style="color:#ff4444;">System-Fehler</h2>
+          <p class="screen-subtitle">${msg}</p>
+          <p style="color:rgba(255,255,255,0.3); font-size:12px;">Zeile: ${lineNo}</p>
+        </div>`;
     }
     return false;
   };
@@ -197,11 +273,12 @@
   }
 
   function showBlockedState() {
-    wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
-      '<div style="font-size:48px; margin-bottom:16px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));">🔒</div>' +
-      '<h2 style="font-size:26px; font-weight:800; color:white;">Bereits abgestimmt</h2>' +
-      '<p style="color:var(--muted); font-size:15px; margin-top:12px;">Du hast an dieser Abstimmung bereits teilgenommen.</p>' +
-      '</div>';
+    wrap.innerHTML = `
+      <div class="glass" style="text-align:center;">
+        <div class="success-icon" style="filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));">🔒</div>
+        <h2 class="font-cursive screen-title" style="color:white;">Bereits abgestimmt</h2>
+        <p class="screen-subtitle">Du hast an dieser Abstimmung bereits teilgenommen.</p>
+      </div>`;
   }
 
   function playTheatricalAnimation(type, callback) {
@@ -209,31 +286,32 @@
     const titleText = isTxtOpen ? 'Wahl eröffnet' : 'Wahl geschlossen';
     const subText = isTxtOpen ? 'STIMMABGABE FREIGEGEBEN' : 'KEINE WEITEREN STIMMEN';
     
-    const iconGreen = '<svg viewBox="0 0 24 24" fill="url(#gradGreen)"><defs><linearGradient id="gradGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="white"/><stop offset="100%" stop-color="var(--green-light)"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>';
-    const iconRed = '<svg viewBox="0 0 24 24" fill="url(#gradRed)"><defs><linearGradient id="gradRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="white"/><stop offset="100%" stop-color="var(--red-light)"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>';
+    const iconGreen = '<svg viewBox="0 0 24 24" fill="url(#gradGreen)"><defs><linearGradient id="gradGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="white"/><stop offset="100%" stop-color="#FFD700"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>';
+    const iconRed = '<svg viewBox="0 0 24 24" fill="url(#gradRed)"><defs><linearGradient id="gradRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="white"/><stop offset="100%" stop-color="#ff4444"/></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>';
     const iconSvg = isTxtOpen ? iconGreen : iconRed;
 
-    wrap.innerHTML = '<div class="anim-container" id="animBox" style="display:flex;">' +
-      '<div class="ambient-glow" id="aGlow"></div>' +
-      '<div class="loader-ring" id="aLoader"></div>' +
-      '<div class="white-flash" id="aFlash"></div>' +
-      '<div class="shockwave" id="aShock"></div>' +
-      '<div class="main-icon" id="aIcon">' + iconSvg + '</div>' +
-      '</div>' +
-      '<div class="anim-text" id="aText">' +
-      '<div class="anim-title">' + titleText + '</div>' +
-      '<div class="anim-sub">' + subText + '</div>' +
-      '</div>';
+    wrap.innerHTML = `
+      <div class="anim-container" id="animBox" style="display:flex;">
+        <div class="ambient-glow" id="aGlow"></div>
+        <div class="loader-ring" id="aLoader"></div>
+        <div class="white-flash" id="aFlash"></div>
+        <div class="shockwave" id="aShock"></div>
+        <div class="main-icon" id="aIcon">${iconSvg}</div>
+      </div>
+      <div class="anim-text" id="aText">
+        <div class="font-cursive anim-title">${titleText}</div>
+        <div class="anim-sub">${subText}</div>
+      </div>`;
 
     const root = document.documentElement;
     if(type === 'open') {
-      root.style.setProperty('--anim-color-light', 'var(--green-light)');
-      root.style.setProperty('--anim-color-deep', 'var(--green-deep)');
-      document.getElementById("bgGlow").style.setProperty('--glow-color', 'var(--green-deep)');
+      root.style.setProperty('--anim-color-light', '#FFD700');
+      root.style.setProperty('--anim-color-deep', '#DAA520');
+      document.getElementById("bgGlow").style.setProperty('--glow-color', '#DAA520');
     } else {
-      root.style.setProperty('--anim-color-light', 'var(--red-light)');
-      root.style.setProperty('--anim-color-deep', 'var(--red-deep)');
-      document.getElementById("bgGlow").style.setProperty('--glow-color', 'var(--red-deep)');
+      root.style.setProperty('--anim-color-light', '#ff4444');
+      root.style.setProperty('--anim-color-deep', '#cc0000');
+      document.getElementById("bgGlow").style.setProperty('--glow-color', '#cc0000');
     }
 
     const loader = document.getElementById("aLoader");
@@ -262,7 +340,7 @@
       icon.style.transition = "transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-out";
       icon.style.opacity = "1"; icon.style.transform = "scale(1)";
       
-      glow.style.transition = "opacity 0.8s ease"; glow.style.opacity = "0.6"; glow.style.transform = "scale(1)";
+      glow.style.transition = "opacity 0.8s ease"; glow.style.opacity = "0.5"; glow.style.transform = "scale(1)";
       glow.style.animation = "pulseAmbient 4s infinite ease-in-out 0.5s";
 
       setTimeout(() => {
@@ -275,11 +353,12 @@
   }
 
   function showWelcomeScreen() {
-    wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
-      '<h2 style="font-size:32px; font-weight:900; margin-bottom: 12px; letter-spacing: -0.5px;">' + escapeHTML(currentSession.title) + '</h2>' +
-      '<p style="color:var(--muted); font-size:16px; margin-bottom: 36px; line-height: 1.5;">Die Abstimmung ist geöffnet.<br>Halte deinen Code bereit.</p>' +
-      '<button class="btnPrimary" id="startVoteBtn">Jetzt wählen</button>' +
-      '</div>';
+    wrap.innerHTML = `
+      <div class="glass">
+        <h2 class="font-cursive screen-title">${escapeHTML(currentSession.title)}</h2>
+        <p class="screen-subtitle">Die Abstimmung ist geöffnet.<br>Halte deinen Code bereit.</p>
+        <button class="btnPrimary" id="startVoteBtn">Jetzt wählen</button>
+      </div>`;
 
     document.getElementById('startVoteBtn').addEventListener('click', () => {
       if (currentSession.activeGroups && currentSession.activeGroups.length > 0) {
@@ -292,19 +371,20 @@
   }
 
   function showCodeEntry() {
-    wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
-      '<h2 style="font-size:26px; font-weight:900; margin-bottom: 12px; letter-spacing: -0.5px;">Wahl-Zugang</h2>' +
-      '<p style="color:var(--muted); font-size:15px; margin-bottom: 28px;">Bitte gib deinen 5-stelligen Code ein.</p>' +
-      '<div class="code-container" id="codeInputs">' +
-      '<input type="text" maxlength="1" class="code-input" autofocus>' +
-      '<input type="text" maxlength="1" class="code-input">' +
-      '<input type="text" maxlength="1" class="code-input">' +
-      '<input type="text" maxlength="1" class="code-input">' +
-      '<input type="text" maxlength="1" class="code-input">' +
-      '</div>' +
-      '<div id="codeError" style="color:var(--red-light); font-size:14px; font-weight:500; min-height:20px; margin-top:12px; text-shadow: 0 0 10px rgba(255,255,255,0.3);"></div>' +
-      '<button class="btnPrimary" id="verifyBtn">Code verifizieren</button>' +
-      '</div>';
+    wrap.innerHTML = `
+      <div class="glass">
+        <h2 class="font-cursive screen-title">Wahl-Zugang</h2>
+        <p class="screen-subtitle">Bitte gib deinen 5-stelligen Code ein.</p>
+        <div class="code-container" id="codeInputs">
+          <input type="text" maxlength="1" class="code-input" autofocus>
+          <input type="text" maxlength="1" class="code-input">
+          <input type="text" maxlength="1" class="code-input">
+          <input type="text" maxlength="1" class="code-input">
+          <input type="text" maxlength="1" class="code-input">
+        </div>
+        <div id="codeError" style="color:#ff4444; font-size:14px; font-weight:500; min-height:20px; margin-bottom:20px; text-align:center;"></div>
+        <button class="btnPrimary" id="verifyBtn">Code verifizieren</button>
+      </div>`;
 
     const inputs = document.querySelectorAll('.code-input');
     inputs.forEach((input, index) => {
@@ -328,7 +408,7 @@
         .select("*").in("group_id", currentSession.activeGroups).eq("code", code).maybeSingle();
         
       if(!codeData || codeErr) {
-        document.getElementById('codeError').textContent = "Dieser Code ist für diese Wahl nicht gültig.";
+        document.getElementById('codeError').textContent = "Dieser Code ist ungültig.";
         btn.disabled = false; btn.textContent = "Code verifizieren";
         return;
       }
@@ -355,34 +435,39 @@
 
     let delegationHtml = "";
     if (allowDelegation) {
-        delegationHtml = '<div class="delegationSection" id="delegationSection">' +
-          '<div class="delegationTitle"><span style="font-size:18px;">🔄</span> Stimmübertragungen</div>' +
-          '<div class="delegationCountRow">' +
-          '<label>Anzahl übertragener Stimmen:</label>' +
-          '<div class="countStepper">' +
-          '<button class="stepBtn" id="stepMinus" type="button" disabled>−</button>' +
-          '<span class="countDisplay" id="countDisplay">0</span>' +
-          '<button class="stepBtn" id="stepPlus" type="button">+</button>' +
-          '</div></div>' +
-          '<div class="delegationNames" id="delegationNames"></div></div>';
+        delegationHtml = `
+          <div class="delegationSection" id="delegationSection">
+            <div class="delegationTitle">🔄 Stimmübertragungen</div>
+            <div class="delegationCountRow">
+              <label>Anzahl übertragener Stimmen:</label>
+              <div class="countStepper">
+                <button class="stepBtn" id="stepMinus" type="button" disabled>−</button>
+                <span class="countDisplay" id="countDisplay">0</span>
+                <button class="stepBtn" id="stepPlus" type="button">+</button>
+              </div>
+            </div>
+            <div class="delegationNames" id="delegationNames"></div>
+          </div>`;
     }
 
     let optsHtml = "";
     for (let i = 0; i < opts.length; i++) {
-        optsHtml += '<button class="optBtn" data-i="' + i + '">' +
-          '<div style="width:24px; height:24px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:0.3s;" class="radio-circle"></div>' +
-          escapeHTML(opts[i]) +
-          '</button>';
+        optsHtml += `
+          <button class="optBtn" data-i="${i}">
+            <div class="radio-circle"><div class="radio-inner"></div></div>
+            ${escapeHTML(opts[i])}
+          </button>`;
     }
 
-    wrap.innerHTML = '<div class="glass">' +
-      '<h2 style="font-size:26px; font-weight:900; margin-bottom: 10px; letter-spacing: -0.5px;">' + escapeHTML(currentSession.title) + '</h2>' +
-      '<p style="color:var(--muted); font-size:15px; margin-bottom: 32px;">Wähle eine Option und bestätige.</p>' +
-      '<div id="optList">' + optsHtml + '</div>' +
-      delegationHtml +
-      '<button class="btnPrimary" id="submitVote" disabled>Stimme abgeben</button>' +
-      '<div id="vMsg" style="margin-top:16px; font-size:14px; font-weight:500; color:var(--red-light); text-align:center; text-shadow: 0 0 10px rgba(255,255,255,0.3);"></div>' +
-      '</div>';
+    wrap.innerHTML = `
+      <div class="glass">
+        <h2 class="font-cursive screen-title" style="font-size:36px;">${escapeHTML(currentSession.title)}</h2>
+        <p class="screen-subtitle" style="margin-bottom:24px;">Wähle eine Option und bestätige.</p>
+        <div id="optList">${optsHtml}</div>
+        ${delegationHtml}
+        <button class="btnPrimary" id="submitVote" disabled style="margin-top:10px;">Stimme abgeben</button>
+        <div id="vMsg" style="margin-top:16px; font-size:14px; font-weight:500; color:#ff4444; text-align:center;"></div>
+      </div>`;
 
     const submitBtn = document.getElementById("submitVote");
     const vMsg = document.getElementById("vMsg");
@@ -391,7 +476,7 @@
       if (selected === null) return;
       const total = 1 + delegationCount;
       const optText = opts[selected];
-      submitBtn.textContent = total > 1 ? '„' + optText + '“ wählen (' + total + ' Stimmen)' : '„' + optText + '“ wählen';
+      submitBtn.textContent = total > 1 ? `„${optText}“ wählen (${total} Stimmen)` : `„${optText}“ wählen`;
     }
 
     function updateDelegationNames() {
@@ -404,7 +489,7 @@
           const inp = document.createElement("input"); 
           inp.type = "text"; 
           inp.className = "delegationNameInput";
-          inp.placeholder = "Name der " + (i + 1) + ". übertragenden Person"; 
+          inp.placeholder = `Name der ${i + 1}. übertragenden Person`; 
           inp.maxLength = 80; 
           container.appendChild(inp);
         }
@@ -425,16 +510,8 @@
 
     document.querySelectorAll(".optBtn").forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll(".optBtn").forEach(b => { 
-            b.classList.remove('selected'); 
-            b.querySelector('.radio-circle').style.borderColor = "var(--border)"; 
-            b.querySelector('.radio-circle').style.boxShadow = "none";
-            b.querySelector('.radio-circle').innerHTML = ""; 
-        });
+        document.querySelectorAll(".optBtn").forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected'); 
-        btn.querySelector('.radio-circle').style.borderColor = "var(--accent1)";
-        btn.querySelector('.radio-circle').style.boxShadow = "0 0 10px rgba(255,215,0,0.3)";
-        btn.querySelector('.radio-circle').innerHTML = '<div style="width:12px; height:12px; background:var(--accent1); border-radius:50%; box-shadow: 0 0 8px rgba(255,215,0,0.8);"></div>';
         selected = parseInt(btn.getAttribute('data-i')); 
         submitBtn.disabled = false; 
         updateSubmitLabel();
@@ -448,7 +525,7 @@
       if (allowDelegation && delegationCount > 0) {
         const inputs = document.querySelectorAll(".delegationNameInput");
         const names = Array.from(inputs).map(i => i.value.trim());
-        if (names.some(n => !n)) { vMsg.textContent = "Bitte alle Namen der übertragenden Personen eintragen."; return; }
+        if (names.some(n => !n)) { vMsg.textContent = "Bitte alle Namen eintragen."; return; }
         delegationNames = names;
       }
 
@@ -478,11 +555,12 @@
       }
 
       sessionStorage.setItem("voted_" + currentSession.id, "1");
-      wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
-        '<div style="font-size:56px; margin-bottom:16px; filter: drop-shadow(0 0 20px rgba(255,215,0,0.4));">✅</div>' +
-        '<h2 style="font-size:26px; font-weight:900; margin-bottom:10px; letter-spacing: -0.5px;">Stimme erfasst</h2>' +
-        '<p style="color:var(--muted); font-size:16px;">Danke für deine Teilnahme.</p>' +
-        '</div>';
+      wrap.innerHTML = `
+        <div class="glass" style="text-align:center;">
+          <div class="success-icon">✅</div>
+          <h2 class="font-cursive screen-title">Stimme erfasst</h2>
+          <p class="screen-subtitle" style="margin-bottom:0;">Danke für deine Teilnahme.</p>
+        </div>`;
     });
   }
 
@@ -499,11 +577,12 @@
         if (error) throw new Error(error.message);
         
         if (!data) {
-            wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
-                '<div style="font-size:48px; margin-bottom:16px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));">⏳</div>' +
-                '<h2 style="font-size:26px; font-weight:900; margin-bottom:12px;">Keine aktive Wahl</h2>' +
-                '<p style="color:var(--muted); font-size:15px; line-height:1.5;">Derzeit läuft keine Abstimmung. Bitte warte, bis der Wahlgang eröffnet wird.</p>' +
-                '</div>';
+            wrap.innerHTML = `
+              <div class="glass" style="text-align:center;">
+                <div class="success-icon" style="filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));">⏳</div>
+                <h2 class="font-cursive screen-title" style="color:white;">Keine aktive Wahl</h2>
+                <p class="screen-subtitle">Derzeit läuft keine Abstimmung. Bitte warte, bis der Wahlgang eröffnet wird.</p>
+              </div>`;
             return;
         }
         
@@ -537,11 +616,12 @@
         showWelcomeScreen();
 
     } catch(err) {
-        wrap.innerHTML = '<div class="glass" style="text-align:center;">' +
-            '<div style="font-size:40px; margin-bottom:16px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));">⚠️</div>' +
-            '<h3 style="margin-bottom:12px; font-size:20px; font-weight:800;">Fehler beim Laden</h3>' +
-            '<p style="color:var(--red-light); font-size:14px; font-weight:500;">' + err.message + '</p>' +
-            '</div>';
+        wrap.innerHTML = `
+          <div class="glass" style="text-align:center;">
+            <div class="success-icon" style="color:#ff4444; filter: drop-shadow(0 0 20px rgba(255,68,68,0.4));">⚠️</div>
+            <h3 class="font-cursive screen-title" style="font-size:32px; color:#ff4444;">Fehler beim Laden</h3>
+            <p class="screen-subtitle" style="color:#ff4444;">${err.message}</p>
+          </div>`;
     }
   })();
 </script>
