@@ -130,20 +130,37 @@
       filter: drop-shadow(0 0 24px var(--accent-sand-glow));
     }
 
-    /* Code Inputs */
-    .code-container { display: flex; gap: 14px; justify-content: center; margin: 0 0 36px; }
+    /* Neu designte Code Inputs */
+    .code-container { display: flex; gap: 14px; justify-content: center; margin: 0 0 40px; }
     .code-input { 
-      width: 54px; height: 68px; font-size: 28px; font-weight: 800; text-align: center; 
-      background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(212, 163, 115, 0.2); 
-      color: var(--accent-sand-light); border-radius: 16px; outline: none; 
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+      width: 60px; height: 75px; 
+      font-size: 34px; text-align: center; 
+      font-family: 'Neulis Cursive', cursive; /* Setzt die fette Schreibschrift für die Code-Zahlen */
+      font-weight: bold;
+      background: rgba(10, 5, 2, 0.7); 
+      border: 1px solid rgba(212, 163, 115, 0.25); 
+      border-bottom: 3px solid rgba(212, 163, 115, 0.5); /* Edle Bodenkante */
+      border-top-color: rgba(255, 255, 255, 0.08); /* Subtiler Glanz oben */
+      color: var(--accent-sand-light); 
+      border-radius: 16px; 
+      outline: none; 
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+      box-shadow: inset 0 4px 15px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.3);
+      text-transform: uppercase;
+      caret-color: var(--accent-sand); /* Sandbrauner Cursor */
     }
     .code-input:focus { 
       border-color: var(--accent-sand); 
-      background: rgba(212, 163, 115, 0.08); 
-      transform: translateY(-4px); 
-      box-shadow: 0 8px 24px var(--accent-sand-glow), inset 0 2px 4px rgba(0,0,0,0.5); 
+      border-bottom-color: var(--accent-sand-light);
+      background: rgba(212, 163, 115, 0.06); 
+      transform: translateY(-6px) scale(1.05); /* Hebt sich weich ab */
+      color: #FFF; /* Hellerer Text im Fokus */
+      text-shadow: 0 0 15px var(--accent-sand-glow);
+      box-shadow: 0 15px 35px var(--accent-sand-glow), inset 0 2px 5px rgba(0,0,0,0.5); 
+    }
+    .code-input:not(:placeholder-shown) {
+      border-color: rgba(212, 163, 115, 0.6);
+      box-shadow: 0 0 20px rgba(212, 163, 115, 0.15), inset 0 2px 5px rgba(0,0,0,0.5);
     }
 
     /* Buttons */
@@ -203,13 +220,34 @@
     .stepBtn:disabled { opacity: 0.2; cursor: not-allowed; color: white; }
     .countDisplay { min-width: 28px; text-align: center; font-size: 18px; font-weight: 600; color: var(--text-main); }
     
-    .delegationNames { display: flex; flex-direction: column; gap: 14px; }
+    .delegationNames { display: flex; flex-direction: column; gap: 16px; }
+    
+    /* Neu designte Delegation Inputs */
     .delegationNameInput { 
-      background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255,255,255,0.1); color: white; 
-      padding: 16px 18px; border-radius: 14px; outline: none; font-size: 15px; width: 100%; 
-      transition: 0.3s; box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+      background: rgba(10, 5, 2, 0.6); 
+      border: 1px solid rgba(212, 163, 115, 0.2); 
+      border-bottom: 2px solid rgba(212, 163, 115, 0.4);
+      color: var(--text-main); 
+      padding: 18px 20px; 
+      border-radius: 16px; 
+      outline: none; 
+      font-size: 16px; 
+      font-weight: 500;
+      width: 100%; 
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.6);
+      caret-color: var(--accent-sand);
     }
-    .delegationNameInput:focus { border-color: var(--accent-sand); background: rgba(212, 163, 115, 0.05); }
+    .delegationNameInput::placeholder {
+      color: rgba(187, 170, 160, 0.4);
+    }
+    .delegationNameInput:focus { 
+      border-color: var(--accent-sand); 
+      border-bottom-color: var(--accent-sand-light);
+      background: rgba(212, 163, 115, 0.05); 
+      box-shadow: 0 8px 25px var(--accent-sand-glow), inset 0 2px 4px rgba(0,0,0,0.5);
+      transform: translateY(-2px);
+    }
 
     /* Theatrical Animations (Angepasst auf Sandbraun/Gold) */
     .anim-container { position: relative; width: 340px; height: 340px; display: flex; justify-content: center; align-items: center; margin: 0 auto 40px; display: none; }
