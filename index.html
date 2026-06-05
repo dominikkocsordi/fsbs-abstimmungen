@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
   <title>Abstimmung · FSBS</title>
-  <meta content="#000000" name="theme-color"/>
+  <meta content="#FDFCFB" name="theme-color"/>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,19 +23,20 @@
     }
 
     :root {
-      /* Minimalistische Farbpalette aus dem Herz */
-      --bg-base: #000000;
-      --accent-rosegold: #C49A84;
-      --accent-champagne: #D8C3A9;
-      --accent-cream: #EFEBE6;
-
-      --text-main: rgba(255, 255, 255, 0.95);
-      --text-muted: rgba(255, 255, 255, 0.50);
-
-      --glass-bg: rgba(25, 25, 25, 0.3);
-      --glass-border: rgba(255, 255, 255, 0.08);
+      /* Helle, minimalistische 2D-Farbpalette */
+      --bg-base: #FDFCFB;       /* Sehr helles Creme-Weiß */
+      --bg-gradient: #F5F2EE;   /* Sanfter Sand/Champagner-Ton für leichten Verlauf */
       
-      --error-red: #FF6B6B;
+      --accent: #B78873;        /* Das dunklere Roségold aus dem Herz für Kontrast */
+      --accent-hover: #A67864;  /* Leicht abgedunkeltes Akzent für Hover-Effekte */
+
+      --text-main: #1D1D1F;     /* Fast Schwarz für perfekten Lesekontrast */
+      --text-muted: #86868B;    /* Sauberes, lesbares Grau */
+
+      --glass-bg: rgba(255, 255, 255, 0.95);
+      --glass-border: rgba(0, 0, 0, 0.06);
+      
+      --error-red: #E03131;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,54 +55,40 @@
       font-weight: bold !important; 
     }
     
-    /* Hintergrund: Herz-Farbverlauf mit starkem Milchglas-Filter */
+    /* Hintergrund: Sehr subtiler, heller Verlauf */
     .bg-gradient {
       position: fixed; inset: 0; z-index: -3;
-      background: radial-gradient(circle at 50% 40%, 
-        var(--accent-cream) 0%, 
-        var(--accent-champagne) 25%, 
-        var(--accent-rosegold) 50%, 
-        var(--bg-base) 90%
-      );
-    }
-
-    .bg-milchglas {
-      position: fixed; inset: 0; z-index: -2;
-      background: rgba(0, 0, 0, 0.70); /* Dunkelt den Hintergrund für Lesbarkeit ab */
-      backdrop-filter: blur(80px) saturate(120%);
-      -webkit-backdrop-filter: blur(80px) saturate(120%);
+      background: radial-gradient(circle at 50% 0%, var(--bg-base) 0%, var(--bg-gradient) 100%);
     }
 
     /* Layout */
     .wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
     
-    /* Minimalistisches Glas-Panel */
+    /* Flache 2D Karte (Clean UI) */
     .glass {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 20px;
+      border-radius: 24px;
       padding: 48px 36px;
       width: 100%;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-      animation: fadeUp 0.6s ease-out forwards;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+      animation: fadeUp 0.5s ease-out forwards;
     }
 
-    /* Saubere Typografie ohne harte Schatten */
+    /* Cleane 2D Typografie */
     .screen-title {
-      font-size: 38px;
-      color: var(--accent-champagne);
+      font-size: 36px;
+      color: var(--text-main);
       margin-bottom: 8px;
       text-align: center;
-      line-height: 1.1;
+      line-height: 1.2;
       font-weight: normal;
     }
     
     .screen-subtitle {
       color: var(--text-muted);
       font-size: 15px;
-      font-weight: 300;
+      font-weight: 400;
       margin-bottom: 32px;
       text-align: center;
       line-height: 1.6;
@@ -111,92 +98,92 @@
       font-size: 48px;
       margin-bottom: 16px;
       text-align: center;
-      opacity: 0.9;
     }
 
-    /* Minimalistische Code-Eingabe */
+    /* Flache Code-Eingabe */
     .code-container { display: flex; gap: 12px; justify-content: center; margin: 0 0 32px; }
     .code-input {
       width: 54px; height: 68px;
       font-size: 28px; text-align: center;
       font-family: 'Neulis Cursive', cursive;
       font-weight: bold;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid transparent;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.1);
       color: var(--text-main);
-      border-radius: 8px;
+      border-radius: 12px;
       outline: none;
       transition: all 0.2s ease;
       text-transform: uppercase;
-      caret-color: var(--accent-champagne);
+      caret-color: var(--accent);
       -webkit-appearance: none;
       appearance: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     }
     .code-input:focus {
-      background: rgba(255, 255, 255, 0.06);
-      border-bottom-color: var(--accent-champagne);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(183, 136, 115, 0.15);
     }
 
-    /* Flache, elegante Buttons */
+    /* Flache 2D Buttons */
     .btnPrimary {
-      width: 100%; padding: 18px;
-      background: var(--accent-champagne);
-      color: #000; font-weight: 600; font-size: 15px; letter-spacing: 0.5px; text-transform: uppercase;
+      width: 100%; padding: 16px;
+      background: var(--accent);
+      color: #FFFFFF; font-weight: 600; font-size: 15px; letter-spacing: 0.5px;
       border: none; border-radius: 12px; cursor: pointer; transition: background 0.2s ease;
     }
     .btnPrimary:hover:not(:disabled) {
-      background: var(--accent-cream);
+      background: var(--accent-hover);
     }
     .btnPrimary:active:not(:disabled) { transform: scale(0.98); }
     .btnPrimary:disabled {
-      background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.05); color: rgba(0, 0, 0, 0.3);
       cursor: not-allowed;
     }
 
-    /* Abstimmungs-Optionen */
+    /* Abstimmungs-Optionen - Minimalistisch */
     .optBtn {
       width: 100%; padding: 18px 20px; 
-      background: transparent;
-      border: 1px solid var(--glass-border); 
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.08); 
       border-radius: 12px; color: var(--text-main);
-      font-size: 15px; font-weight: 400; text-align: left; cursor: pointer;
+      font-size: 15px; font-weight: 500; text-align: left; cursor: pointer;
       transition: all 0.2s ease; display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
     }
-    .optBtn:hover { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.15); }
+    .optBtn:hover { border-color: rgba(0, 0, 0, 0.2); }
     .optBtn.selected {
-      background: rgba(216, 195, 169, 0.08); /* Champagner transparent */
-      border-color: var(--accent-champagne);
+      background: rgba(183, 136, 115, 0.06);
+      border-color: var(--accent);
     }
 
     .radio-circle {
-      width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.3);
+      width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.2);
       display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s ease;
+      background: #FFF;
     }
     .optBtn.selected .radio-circle {
-      border-color: var(--accent-champagne);
+      border-color: var(--accent);
     }
     .radio-inner {
-      width: 10px; height: 10px; background: var(--accent-champagne); border-radius: 50%;
+      width: 10px; height: 10px; background: var(--accent); border-radius: 50%;
       transform: scale(0); transition: transform 0.2s ease;
     }
     .optBtn.selected .radio-inner { transform: scale(1); }
 
     /* Stimmübertragung UI */
-    .delegationSection { margin: 24px 0; padding: 20px; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); }
-    .delegationTitle { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+    .delegationSection { margin: 24px 0; padding: 20px; border-radius: 12px; background: #F9F9F9; border: 1px solid rgba(0,0,0,0.04); }
+    .delegationTitle { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
     .delegationCountRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
-    .delegationCountRow label { font-size: 14px; color: var(--text-main); }
+    .delegationCountRow label { font-size: 14px; font-weight: 500; color: var(--text-main); }
     .countStepper { display: flex; align-items: center; gap: 12px; }
-    .stepBtn { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.05); border: none; color: var(--text-main); font-size: 18px; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
-    .stepBtn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
-    .stepBtn:disabled { opacity: 0.2; cursor: not-allowed; }
-    .countDisplay { min-width: 24px; text-align: center; font-size: 16px; font-weight: 500; }
+    .stepBtn { width: 32px; height: 32px; border-radius: 8px; background: #EAEAEA; border: none; color: var(--text-main); font-size: 18px; cursor: pointer; display: grid; place-items: center; transition: 0.2s; }
+    .stepBtn:hover:not(:disabled) { background: #DDDDDD; }
+    .stepBtn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .countDisplay { min-width: 24px; text-align: center; font-size: 16px; font-weight: 600; }
     .delegationNames { display: flex; flex-direction: column; gap: 12px; }
 
     input[type="text"], .delegationNameInput {
-      background: rgba(255,255,255,0.02) !important;
-      border: 1px solid var(--glass-border) !important;
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0,0,0,0.1) !important;
       color: var(--text-main) !important;
       padding: 14px 16px;
       border-radius: 10px;
@@ -208,25 +195,25 @@
       appearance: none;
     }
     input[type="text"]::placeholder, .delegationNameInput::placeholder {
-      color: var(--text-muted) !important;
+      color: #A0A0A0 !important;
     }
     input[type="text"]:focus, .delegationNameInput:focus {
-      background: rgba(255,255,255,0.05) !important;
-      border-color: var(--accent-champagne) !important;
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 3px rgba(183, 136, 115, 0.15) !important;
     }
 
-    /* Reduzierte Animationen */
-    .anim-container { position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; display: none; }
-    .main-icon { position: absolute; width: 80px; height: 80px; opacity: 0; transform: scale(0.8); }
-    .main-icon svg { width: 100%; height: 100%; fill: var(--accent-champagne); }
+    /* Flache Animationen */
+    .anim-container { position: relative; width: 100%; height: 160px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; display: none; }
+    .main-icon { position: absolute; width: 70px; height: 70px; opacity: 0; transform: scale(0.8); }
+    .main-icon svg { width: 100%; height: 100%; fill: var(--accent); }
     
     .anim-text { text-align: center; opacity: 0; transform: translateY(10px); }
-    .anim-title { font-size: 32px; color: var(--accent-champagne); margin-bottom: 4px; }
-    .anim-sub { font-size: 13px; font-weight: 500; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+    .anim-title { font-size: 28px; color: var(--text-main); margin-bottom: 4px; font-weight: 600; }
+    .anim-sub { font-size: 13px; font-weight: 500; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
 
     /* Minimalistisches Seiten-Emblem */
     .page-outer {
-      width: 100%; max-width: 480px; margin: 0 auto;
+      width: 100%; max-width: 440px; margin: 0 auto;
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 40px 20px 60px;
@@ -236,26 +223,31 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 40px;
+      margin-bottom: 32px;
       opacity: 0;
       transform: translateY(-10px);
       transition: opacity 0.4s ease, transform 0.4s ease;
     }
     .page-emblem.visible { opacity: 1; transform: translateY(0); }
 
-    .emblem-heart-center { width: 100px; height: 100px; margin-bottom: 16px; }
-    .emblem-heart-center img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: screen; opacity: 0.9; }
+    .emblem-heart-center { width: 90px; height: 90px; margin-bottom: 12px; }
+    /* mix-blend-mode entfernt, damit das transparente Herz auf hellem Hintergrund perfekt wirkt */
+    .emblem-heart-center img { width: 100%; height: 100%; object-fit: contain; }
 
     .emblem-label { text-align: center; }
-    .emblem-label-brand { font-family: 'Neulis Cursive', cursive; font-size: 24px; color: var(--accent-cream); line-height: 1; margin-bottom: 4px; }
-    .emblem-label-event { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+    .emblem-label-brand { font-family: 'Neulis Cursive', cursive; font-size: 22px; color: var(--text-main); line-height: 1; margin-bottom: 4px; }
+    .emblem-label-event { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
 
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .loading-pulse {
+      animation: pulseText 1.5s infinite alternate ease-in-out;
+    }
+    @keyframes pulseText { 0% { opacity: 0.4; } 100% { opacity: 1; } }
   </style>
 </head>
 <body>
 <div class="bg-gradient"></div>
-<div class="bg-milchglas"></div>
 
 <div class="page-outer">
   <div id="pageHeader" class="page-emblem">
@@ -269,7 +261,7 @@
   </div>
 
   <div class="wrap" id="mainWrap">
-    <div id="loadingState" style="text-align:center; color: var(--text-muted); font-weight: 400; font-size: 14px;">Lade System...</div>
+    <div id="loadingState" class="loading-pulse" style="text-align:center; color: var(--text-muted); font-weight: 500; font-size: 14px;">Lade System...</div>
   </div>
 </div>
 
@@ -281,8 +273,8 @@
       if(h) { h.style.display='flex'; requestAnimationFrame(() => requestAnimationFrame(() => h.classList.add('visible'))); }
       wrap.innerHTML = `
         <div class="glass" style="text-align:center;">
-          <h2 class="font-cursive screen-title" style="color:var(--text-main);">System-Fehler</h2>
-          <p class="screen-subtitle" style="color:var(--error-red);">${msg}</p>
+          <h2 class="font-cursive screen-title" style="color:var(--error-red);">System-Fehler</h2>
+          <p class="screen-subtitle" style="color:var(--text-main);">${msg}</p>
           <p style="color:var(--text-muted); font-size:12px;">Zeile: ${lineNo}</p>
         </div>`;
     }
@@ -291,17 +283,25 @@
 
   const SUPABASE_URL = "https://hdhueuihmxbskiusenpe.supabase.co";
   const SUPABASE_KEY = "sb_publishable_H6YjVStNvwY-VnZuZCYDxw_mOWEvAAW";
-  
   let sb;
-  try {
-      sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  } catch(e) {
-      throw new Error("Datenbank-Treiber fehlt.");
-  }
 
   const wrap = document.getElementById("mainWrap");
   let currentSession = null;
   let voterCode = null;
+
+  // Watchdog Timer
+  const watchdogTimer = setTimeout(() => {
+    if (wrap && wrap.innerHTML.includes('Lade System')) {
+      const h = document.getElementById('pageHeader');
+      if (h) { h.style.display = 'flex'; h.classList.add('visible'); }
+      wrap.innerHTML = `
+        <div class="glass" style="text-align:center;">
+          <h2 class="font-cursive screen-title">Zeitüberschreitung</h2>
+          <p class="screen-subtitle">Die Verbindung zum Server dauert zu lange.<br>Überprüfe dein Internet oder lade die Seite neu.</p>
+          <button class="btnPrimary" onclick="window.location.reload()" style="margin-top: 10px;">Neu laden</button>
+        </div>`;
+    }
+  }, 6000); 
 
   function showHeader() {
     const h = document.getElementById('pageHeader');
@@ -345,7 +345,7 @@
     hideHeader();
     const isTxtOpen = type === 'open';
     const titleText = isTxtOpen ? 'Wahl eröffnet' : 'Wahl geschlossen';
-    const subText = isTxtOpen ? 'STIMMABGABE FREIGEGEBEN' : 'KEINE WEITEREN STIMMEN';
+    const subText = isTxtOpen ? 'Stimmabgabe freigegeben' : 'Keine weiteren Stimmen';
     
     const iconPath = isTxtOpen 
       ? "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" 
@@ -366,15 +366,15 @@
     if(!isTxtOpen) icon.querySelector('svg').style.fill = "var(--error-red)";
 
     setTimeout(() => {
-      icon.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out";
+      icon.style.transition = "transform 0.5s ease, opacity 0.5s ease";
       icon.style.opacity = "1"; icon.style.transform = "scale(1)";
       
       setTimeout(() => {
-        text.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease";
+        text.style.transition = "transform 0.5s ease, opacity 0.5s ease";
         text.style.opacity = "1"; text.style.transform = "translateY(0)";
       }, 100);
 
-      if(callback) setTimeout(callback, 1800); // Kürzere Dauer
+      if(callback) setTimeout(callback, 1500);
     }, 50);
   }
 
@@ -410,7 +410,7 @@
           <input type="text" maxlength="1" class="code-input">
           <input type="text" maxlength="1" class="code-input">
         </div>
-        <div id="codeError" style="color:var(--error-red); font-size:13px; font-weight:400; min-height:20px; margin-bottom:24px; text-align:center;"></div>
+        <div id="codeError" style="color:var(--error-red); font-size:14px; font-weight:500; min-height:20px; margin-bottom:24px; text-align:center;"></div>
         <button class="btnPrimary" id="verifyBtn">Bestätigen</button>
       </div>`;
 
@@ -430,7 +430,7 @@
       if(code.length !== 5) return;
       
       const btn = document.getElementById('verifyBtn');
-      btn.disabled = true; btn.textContent = "Prüfe...";
+      btn.disabled = true; btn.textContent = "Wird geprüft...";
       
       const { data: codeData, error: codeErr } = await sb.from("voter_codes")
         .select("*").in("group_id", currentSession.activeGroups).eq("code", code).maybeSingle();
@@ -495,7 +495,7 @@
         <div id="optList">${optsHtml}</div>
         ${delegationHtml}
         <button class="btnPrimary" id="submitVote" disabled style="margin-top:16px;">Abstimmen</button>
-        <div id="vMsg" style="margin-top:16px; font-size:13px; color:var(--error-red); text-align:center;"></div>
+        <div id="vMsg" style="margin-top:16px; font-size:14px; font-weight:500; color:var(--error-red); text-align:center;"></div>
       </div>`;
 
     const submitBtn = document.getElementById("submitVote");
@@ -557,7 +557,7 @@
         delegationNames = names;
       }
 
-      submitBtn.disabled = true; submitBtn.textContent = "Speichere...";
+      submitBtn.disabled = true; submitBtn.textContent = "Wird gespeichert...";
 
       const vToken = getVoterToken(currentSession.id);
       const weight = 1 + delegationCount;
@@ -587,7 +587,7 @@
       wrap.innerHTML = `
         <div class="glass" style="text-align:center;">
           <h2 class="font-cursive screen-title">Stimme erfasst</h2>
-          <p class="screen-subtitle" style="margin-bottom:0;">Vielen Dank.</p>
+          <p class="screen-subtitle" style="margin-bottom:0;">Vielen Dank für deine Teilnahme.</p>
         </div>`;
     });
   }
@@ -595,6 +595,11 @@
   // --- START ---
   (async () => {
     try {
+        if (typeof supabase === 'undefined') {
+            throw new Error("Datenbank-Skript konnte nicht geladen werden.");
+        }
+        sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         const { data, error } = await sb.from("vote_sessions")
           .select("*")
           .eq("status", "open")
@@ -603,6 +608,8 @@
           .maybeSingle();
 
         if (error) throw new Error(error.message);
+        
+        clearTimeout(watchdogTimer);
         
         if (!data) {
             showHeader();
@@ -644,10 +651,11 @@
         showWelcomeScreen();
 
     } catch(err) {
+        clearTimeout(watchdogTimer);
         showHeader();
         wrap.innerHTML = `
           <div class="glass" style="text-align:center;">
-            <h3 class="font-cursive screen-title" style="color:var(--text-main);">Fehler</h3>
+            <h3 class="font-cursive screen-title">Fehler</h3>
             <p class="screen-subtitle" style="color:var(--error-red);">${err.message}</p>
           </div>`;
     }
