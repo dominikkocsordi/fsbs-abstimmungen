@@ -293,79 +293,30 @@
 
     .emblem-ring-wrap {
       position: relative;
-      width: 148px; height: 148px;
       display: flex; align-items: center; justify-content: center;
-    }
-
-    /* Ambient radial glow behind ring */
-    .emblem-ambient {
-      position: absolute; inset: -28px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(77,168,255,0.16) 0%, rgba(255,179,71,0.11) 40%, transparent 65%);
-      animation: emblemPulse 4.5s ease-in-out infinite alternate;
-      pointer-events: none;
-    }
-
-    /*
-     * 5 Ring-Layer analog zu Swift's tubeRing Group:
-     * Proportionen skaliert von Swift (460px Ring) → 148px: Faktor ≈ 0.32
-     * L1: lineWidth 54→17, blur 60→19, opacity 0.85
-     * L2: lineWidth 34→11, blur 24→8,  opacity 0.96
-     * L3: lineWidth 18→6,  blur 7→2
-     * L4: lineWidth 10→3,  blur 2→0.6
-     * L5: highlightGradient (weiß), lineWidth 2.6→1, blur 0.5→0.2, + shadows
-     */
-    .emblem-ring-l1 {
-      position: absolute; inset: -10px; border-radius: 50%;
-      background: conic-gradient(from -90deg, #4DA8FF 0%, #ffffff 18%, #FFB347 46%, #ffffff 78%, #4DA8FF 100%);
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 22px), #000 calc(100% - 22px));
-      mask:         radial-gradient(farthest-side, transparent calc(100% - 22px), #000 calc(100% - 22px));
-      filter: blur(19px); opacity: 0.85;
-      animation: emblemRotate 28s linear infinite;
-    }
-    .emblem-ring-l2 {
-      position: absolute; inset: -2px; border-radius: 50%;
-      background: conic-gradient(from -90deg, #4DA8FF 0%, #ffffff 18%, #FFB347 46%, #ffffff 78%, #4DA8FF 100%);
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 13px), #000 calc(100% - 13px));
-      mask:         radial-gradient(farthest-side, transparent calc(100% - 13px), #000 calc(100% - 13px));
-      filter: blur(8px); opacity: 0.96;
-      animation: emblemRotate 28s linear infinite;
-    }
-    .emblem-ring-l3 {
-      position: absolute; inset: 0; border-radius: 50%;
-      background: conic-gradient(from -90deg, #4DA8FF 0%, #ffffff 18%, #FFB347 46%, #ffffff 78%, #4DA8FF 100%);
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 7px));
-      mask:         radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 7px));
-      filter: blur(2px);
-      animation: emblemRotate 28s linear infinite;
-    }
-    .emblem-ring-l4 {
-      position: absolute; inset: 2px; border-radius: 50%;
-      background: conic-gradient(from -90deg, #4DA8FF 0%, #ffffff 18%, #FFB347 46%, #ffffff 78%, #4DA8FF 100%);
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
-      mask:         radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
-      filter: blur(0.6px);
-      animation: emblemRotate 28s linear infinite;
-    }
-    /* L5: highlightGradient (weiß, wie Swift) + Schatten in Blau & Amber */
-    .emblem-ring-l5 {
-      position: absolute; inset: 3px; border-radius: 50%;
-      background: conic-gradient(from -90deg,
-        rgba(255,255,255,0.95) 0%, rgba(255,255,255,1) 18%,
-        rgba(255,255,255,0.80) 50%,
-        rgba(255,255,255,1) 82%, rgba(255,255,255,0.95) 100%);
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
-      mask:         radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
-      filter: blur(0.2px) drop-shadow(0 0 6px rgba(77,168,255,0.8)) drop-shadow(0 0 4px rgba(255,179,71,0.7));
-      animation: emblemRotate 28s linear infinite;
     }
 
     /* Herz-Zentrum */
     .emblem-heart-center {
       position: relative; z-index: 2;
-      width: 82px; height: 82px;
+      width: 110px; height: 110px;
     }
     .emblem-heart-center svg { width: 100%; height: 100%; }
+
+    .emblem-label {
+      margin-top: 16px;
+      text-align: center;
+      line-height: 1.35;
+    }
+    .emblem-label-top {
+      font-size: 13px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent-gold);
+      text-shadow: 0 0 18px rgba(255,214,127,0.4);
+    }
+    .emblem-label-bottom {
+      font-size: 12px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-muted);
+    }
 
     @keyframes emblemRotate { to { transform: rotate(360deg); } }
     @keyframes emblemPulse {
@@ -384,13 +335,7 @@
 <div class="page-outer">
   <!-- Kopfzeilen-Emblem: Ring + Herz -->
   <div id="pageHeader" class="page-emblem">
-    <div class="emblem-ring-wrap">
-      <div class="emblem-ambient"></div>
-      <div class="emblem-ring-l1"></div>
-      <div class="emblem-ring-l2"></div>
-      <div class="emblem-ring-l3"></div>
-      <div class="emblem-ring-l4"></div>
-      <div class="emblem-ring-l5"></div>
+    <div class="emblem-ring-wrap" style="width:110px;height:110px;">
       <div class="emblem-heart-center">
         <svg viewBox="0 0 100 88" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -430,15 +375,18 @@
           <path d="M50 84 C18 62 2 40 2 24 C2 10 12 1 25 1 C33 1 41 6 50 15 C59 6 67 1 75 1 C88 1 98 10 98 24 C98 40 82 62 50 84Z"
                 fill="url(#hgBA)" filter="url(#hShadow)"
                 transform="translate(50,42) scale(0.48) translate(-50,-42)"/>
-          <!-- "25" zentriert im innersten Herz (scale 0.48, optisches Zentrum ~y=40) -->
-          <!-- fontSize ≈ size*0.193 in Swift, hier in SVG-Einheiten: ~14 bei viewBox 100 -->
+          <!-- "25" etwas größer, weiterhin im innersten Herz -->
           <text x="50" y="44"
                 text-anchor="middle" dominant-baseline="central"
-                font-size="14" font-weight="900" font-family="system-ui,-apple-system,sans-serif"
+                font-size="17" font-weight="900" font-family="system-ui,-apple-system,sans-serif"
                 letter-spacing="-0.5"
                 fill="url(#hgTxt)" filter="url(#txtShadow)">25</text>
         </svg>
       </div>
+    </div>
+    <div class="emblem-label">
+      <div class="emblem-label-top">FSBS</div>
+      <div class="emblem-label-bottom">Mitgliederversammlung</div>
     </div>
   </div>
 
