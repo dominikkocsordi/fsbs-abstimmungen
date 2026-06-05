@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Abstimmungen · FSBS</title>
-<meta name="theme-color" content="#061827">
+<meta name="theme-color" content="#000000">
 <link rel="stylesheet" href="/mobile-nav.css">
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <style>
 :root{
-  --bg1: #061827; --bg2: #0A2235; --bg3: #04111C;
-  --accent1: #f97316; --accent2: #a855f7;
+  --bg1: #000000; --bg2: #0a0a0a; --bg3: #111111;
+  --accent1: #FFD700; --accent2: #DAA520;
   --glass: rgba(255,255,255,.05);
   --border: rgba(255,255,255,.12);
   --text: rgba(255,255,255,.92);
   --muted: rgba(255,255,255,.60);
   --shadow: 0 20px 55px rgba(0,0,0,.50);
-  --ok: #3BD68A; --bad: #FF4D4D;
+  --ok: #FFD700; --bad: #ffffff;
 }
 *{ box-sizing:border-box; margin:0; padding:0; }
 html, body{ min-height:100%; }
@@ -36,7 +36,7 @@ button:active{ transform:scale(.98); }
 .btn-primary:hover{ filter:brightness(1.1); }
 .btn-secondary{ background:rgba(255,255,255,.08); color:var(--text); border:1px solid var(--border); }
 .btn-secondary:hover{ background:rgba(255,255,255,.12); }
-.btn-danger{ background:rgba(255,77,77,.15); color:var(--bad); border:1px solid rgba(255,77,77,.3); }
+.btn-danger{ background:rgba(255,255,255,.15); color:var(--bad); border:1px solid rgba(255,255,255,.3); }
 .btn-sm{ padding:8px 14px; font-size:13px; border-radius:12px; }
 
 .pageHeader{ display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; margin-top:30px; }
@@ -47,7 +47,7 @@ button:active{ transform:scale(.98); }
 .sessionCardTitle{ font-size:18px; font-weight:800; margin-bottom:6px; }
 
 .statusBadge{ padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700; }
-.statusBadge.open{ background:rgba(59,214,138,.15); color:var(--ok); border:1px solid rgba(59,214,138,.3); }
+.statusBadge.open{ background:rgba(255,215,0,.15); color:var(--ok); border:1px solid rgba(255,215,0,.3); }
 .statusBadge.closed{ background:rgba(255,255,255,.08); color:var(--muted); border:1px solid var(--border); }
 
 dialog{ background:transparent; border:none; padding:0; max-width:520px; width:calc(100% - 32px); margin:auto; }
@@ -63,7 +63,7 @@ input:focus, select:focus{ border-color:var(--accent1); background:rgba(255,255,
 .optionsList{ display:flex; flex-direction:column; gap:8px; }
 .optionRow{ display:flex; gap:8px; }
 .optionRow input{ flex:1; }
-.optionRemove{ background:rgba(255,77,77,.15); color:var(--bad); width:40px; border-radius:12px; }
+.optionRemove{ background:rgba(255,255,255,.15); color:var(--bad); width:40px; border-radius:12px; }
 
 .code-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 10px; max-height: 200px; overflow-y: auto; }
 .code-badge { background: rgba(255,255,255,.08); padding: 8px; border-radius: 8px; text-align: center; font-family: monospace; font-weight: 800; font-size: 16px; border: 1px solid var(--border); }
@@ -89,7 +89,6 @@ input:focus, select:focus{ border-color:var(--accent1); background:rgba(255,255,
   </div>
 </div>
 
-<!-- Modal: Neue Abstimmung -->
 <dialog id="createModal">
   <div class="modalBox">
     <div class="modalTitle">Neue Abstimmung</div>
@@ -98,12 +97,10 @@ input:focus, select:focus{ border-color:var(--accent1); background:rgba(255,255,
       <input type="text" id="sessionTitle" placeholder="z.B. Wahl des Kassenwarts">
     </div>
     
-    <!-- Hier ist das aktualisierte Mehrfachauswahl-Feld für Gruppen -->
     <div class="formGroup">
       <label class="formLabel">Freigeschaltete Wählergruppen (Mehrfachauswahl)</label>
       <div id="groupsCheckboxContainer" style="display:flex; flex-direction:column; gap:8px; background:rgba(255,255,255,.05); padding:12px; border-radius:14px; border:1px solid var(--border); max-height:160px; overflow-y:auto;">
-        <!-- Dynamische Checkboxen -->
-      </div>
+        </div>
       <div style="font-size:12px; color:var(--muted); margin-top:6px;">Wenn keine Gruppe angehakt wird, bleibt die Wahl für jeden offen zugänglich.</div>
     </div>
 
@@ -119,7 +116,6 @@ input:focus, select:focus{ border-color:var(--accent1); background:rgba(255,255,
   </div>
 </dialog>
 
-<!-- Modal: Gruppenverwaltung -->
 <dialog id="groupModal">
   <div class="modalBox" style="max-width: 600px;">
     <div class="modalTitle">Gruppen & Codes</div>
@@ -156,7 +152,6 @@ async function loadGroups() {
   const { data } = await sb.from("voter_groups").select("*").order("created_at", { ascending: false });
   allGroups = data || [];
   
-  // Rendert die Checkboxen
   const container = document.getElementById("groupsCheckboxContainer");
   container.innerHTML = allGroups.map(g => `
     <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
@@ -221,6 +216,11 @@ document.getElementById("saveSessionBtn").addEventListener("click", async () => 
   if (!title || opts.length < 2) return alert("Bitte Titel und mindestens 2 Optionen eingeben.");
   
   document.getElementById("saveSessionBtn").textContent = "Erstelle...";
+  
+  // Alle bisherigen offenen Abstimmungen schließen, damit es immer nur EINE offene Wahl gibt
+  await sb.from("vote_sessions").update({ status: "closed" }).eq("status", "open");
+  
+  // Neue Abstimmung eintragen
   await sb.from("vote_sessions").insert({ title, options: opts, group_ids: groupIds });
   
   document.getElementById("createModal").close();
